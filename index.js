@@ -1,7 +1,7 @@
 
 mapboxgl.accessToken = 'pk.eyJ1Ijoic2hpaHdlbnd1dHciLCJhIjoiY2poZTMweWFzMHFqMjMwcGMxODB4ZnF2NSJ9.Z26UldBScU4ycC75f24TnA';
 
-var map = new mapboxgl.Map({
+let map = new mapboxgl.Map({
   container: 'map', // container id
   style: 'mapbox://styles/shihwenwutw/ck1myebc70e851co3unmss075', // stylesheet location
   center: [121.55244833917465, 25.03793365035355], // starting position [lng, lat]
@@ -9,25 +9,25 @@ var map = new mapboxgl.Map({
   minZoom: 10,
   maxZoom: 17 // starting zoom
 });
-var nav = new mapboxgl.NavigationControl();
+let nav = new mapboxgl.NavigationControl();
 map.addControl(nav, 'bottom-right');
 
 //HOVER related
 // Target the relevant span tags in the station info div
-var stationDisplay = document.getElementById('station');
-var routeDisplay = document.getElementById('routes');
+let stationDisplay = document.getElementById('station');
+let routeDisplay = document.getElementById('routes');
 
 //FILTER related
 // Holds visible airport features for filtering
-var stations = [];
+let stations = [];
 
 // Create a popup, but don't add it to the map yet.
-var popup = new mapboxgl.Popup({
+let popup = new mapboxgl.Popup({
   closeButton: false
 });
 
-var filterEl = document.getElementById('feature-filter');
-var listingEl = document.getElementById('feature-listing');
+let filterEl = document.getElementById('feature-filter');
+let listingEl = document.getElementById('feature-listing');
 
 //feature improvement
 let value = '';
@@ -41,8 +41,8 @@ function renderListings(features) {
   listingEl.innerHTML = '';
   if (features.length) {
     features.forEach(function(feature) {
-      var prop = feature.properties;
-      var item = document.createElement('p');
+      let prop = feature.properties;
+      let item = document.createElement('p');
       item.textContent = prop.station;
       item.addEventListener('mouseover', function() {
         // Highlight corresponding feature on the map
@@ -56,7 +56,7 @@ function renderListings(features) {
     // Show the filter input
     filterEl.parentNode.style.display = 'block';
   } else {
-    var empty = document.createElement('p');
+    let empty = document.createElement('p');
     empty.textContent = 'No results, drag or change words to populate';
     listingEl.appendChild(empty);
 
@@ -73,11 +73,11 @@ function normalize(string) {
 }
 
 function getUniqueFeatures(array, comparatorProperty) {
-  var existingFeatureKeys = {};
+  let existingFeatureKeys = {};
   // Because features come from tiled vector data, feature geometries may be split
   // or duplicated across tile boundaries and, as a result, features may appear
   // multiple times in query results.
-  var uniqueFeatures = array.filter(function(el) {
+  let uniqueFeatures = array.filter(function(el) {
     if (existingFeatureKeys[el.properties[comparatorProperty]]) {
       return false;
     } else {
@@ -93,8 +93,8 @@ function featureUpdates(value, filtered){
   if(value){
     // Filter visible features that don't match the input value.
     filtered = stations.filter(function(feature) {
-      var routes = normalize(feature.properties.routes);
-      var station = normalize(feature.properties.station);
+      let routes = normalize(feature.properties.routes);
+      let station = normalize(feature.properties.station);
       return routes.indexOf(value) > -1 || station.indexOf(value) > -1;
     });
     renderListings(filtered);
@@ -180,9 +180,8 @@ map.on('load', function(){
   });
 
   map.on('moveend', function() {
-    var features = map.queryRenderedFeatures({layers: ['station-origin']});
+    let features = map.queryRenderedFeatures({layers: ['station-origin']});
     if (features) {
-      //var uniqueFeatures = getUniqueFeatures(features, "iata_code");
       // Populate features for the listing overlay.
       //renderListings(uniqueFeatures);
       renderListings(features);

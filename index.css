@@ -11,20 +11,6 @@ body {
   left:200px;
 }
 
-#panel {
-  background: white;
-  width: 20%;
-  border: 1px solid rgba(0,0,0,0.05);
-  position: absolute;
-  right: 16px;
-  top: 16px;
-  box-shadow: 0 0 4px 0 rgba(0,0,0,0.1);
-  color: rgba(0,0,0,0.5);
-  text-align: center;
-  padding: 10px;
-  visibility: hidden;
-}
-
 .stationInfo {
   position: absolute;
   right: 16px;
@@ -83,13 +69,13 @@ body {
     margin: 0;
 }
 
-.map-overlay .listing a {
+.map-overlay .listing p {
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     color: #404;
     text-decoration: none;
 }
 
-.map-overlay .listing a:last-child {
+.map-overlay .listing p:last-child {
     border: none;
 }
 

@@ -1,0 +1,98 @@
+body {
+  margin:0;
+  padding:0;
+}
+
+#map {
+  position:absolute;
+  top:0;
+  bottom:0;
+  width:calc(100% - 200px);
+  left:200px;
+}
+
+#panel {
+  background: white;
+  width: 20%;
+  border: 1px solid rgba(0,0,0,0.05);
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  box-shadow: 0 0 4px 0 rgba(0,0,0,0.1);
+  color: rgba(0,0,0,0.5);
+  text-align: center;
+  padding: 10px;
+  visibility: hidden;
+}
+
+.stationInfo {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  font-family: sans-serif;
+  margin-top: 5px;
+  margin-left: 5px;
+  padding: 5px;
+  width: 20%;
+  border: 2px solid black;
+  font-size: 14px;
+  color: #222;
+  background-color: #fff;
+  border-radius: 3px;
+}
+
+
+.map-overlay {
+    position: absolute;
+    width: 200px;
+    /*min-width: 200px;*/
+    top: 0;
+    bottom: 0;
+    left: 0;
+    font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    background-color: #fff;
+    max-height: 100%;
+    overflow: hidden;
+}
+
+.map-overlay fieldset {
+    display: none;
+    background: #ddd;
+    border: none;
+    padding: 10px;
+    margin: 0;
+}
+
+.map-overlay input {
+    display: block;
+    border: none;
+    width: 75%;
+    border-radius: 3px;
+    padding: 10px;
+    margin: 0 auto;
+}
+
+.map-overlay .listing {
+    overflow: auto;
+    max-height: 100%;
+}
+
+.map-overlay .listing > * {
+    display: block;
+    padding: 5px 10px;
+    margin: 0;
+}
+
+.map-overlay .listing a {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    color: #404;
+    text-decoration: none;
+}
+
+.map-overlay .listing a:last-child {
+    border: none;
+}
+
+.map-overlay .listing p:hover {
+    background: #f0f0f0;
+}

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>Display a map</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.4.0/mapbox-gl.css' rel='stylesheet' />
+    <link href="index.css" type="text/css" rel="stylesheet">
+
+</head>
+<body>
+
+<div id='map'></div>
+<div id='panel'>
+  <form action="/example.html" method="POST">
+    <label for="busRoute">Which route?</label>
+    <br>
+    <input type="text" name="route" id="busRoute" oninput="document.getElementById('input').textContent=this.value;">
+    <div>Entered route: <span id="input">your route</span></div>
+  </form>
+</div>
+
+<div class='stationInfo'>
+  <div><strong>Station Name:</strong> <span id='station'></span></div>
+  <div><strong>Routes:</strong> <span id='routes'></span></div>
+</div>
+
+<div class='map-overlay'>
+    <fieldset>
+        <input id='feature-filter' type='text' placeholder='輸入公車路線或站名' />
+    </fieldset>
+    <div id='feature-listing' class='listing'></div>
+</div>
+
+<script src="./index.js"></script>
+
+</body>
+</html>

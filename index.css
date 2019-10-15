@@ -127,17 +127,17 @@ body {
 .mapboxgl-popup-anchor-top .mapboxgl-popup-tip,
 .mapboxgl-popup-anchor-top-left .mapboxgl-popup-tip,
 .mapboxgl-popup-anchor-top-right .mapboxgl-popup-tip {
-    border-bottom-color: #1726ff;
+    border-bottom-color: #3f80d5;
     }
 .mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip,
 .mapboxgl-popup-anchor-bottom-left .mapboxgl-popup-tip,
 .mapboxgl-popup-anchor-bottom-right .mapboxgl-popup-tip {
-    border-top-color: #1726ff;
+    border-top-color: #3f80d5;
     }
 .mapboxgl-popup-anchor-left .mapboxgl-popup-tip {
-    border-right-color: #1726ff;
+    border-right-color: #3f80d5;
     }
 .mapboxgl-popup-anchor-right .mapboxgl-popup-tip {
-    border-left-color: #1726ff;
+    border-left-color: #3f80d5;
 
     }

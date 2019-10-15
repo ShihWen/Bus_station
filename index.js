@@ -244,7 +244,7 @@ map.on('load', function(){
         ['boolean', ['feature-state', 'hover'], false],
         9,
         ['boolean', ['feature-state', 'select'], false],
-        9,
+        5,
         3
       ],
       'circle-color': [

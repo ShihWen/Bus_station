@@ -12,6 +12,10 @@ let map = new mapboxgl.Map({
 let nav = new mapboxgl.NavigationControl();
 map.addControl(nav, 'bottom-right');
 
+const source_layer = 'bus_station_greaterTPE_2';
+const source_url = "mapbox://" + "shihwenwutw.4y51xvvi"
+
+
 //HOVER related
 // Target the relevant span tags in the station info div
 let stationDisplay = document.getElementById('station');
@@ -107,7 +111,7 @@ function featureUpdates(value, filtered){
     filt_id.forEach(function(id){
       map.setFeatureState({
         source: 'stations',
-        sourceLayer: 'bus_station',
+        sourceLayer: source_layer,
         id: id
       }, {
         select: true
@@ -117,7 +121,7 @@ function featureUpdates(value, filtered){
     res.forEach(function(id){
       map.setFeatureState({
         source: 'stations',
-        sourceLayer: 'bus_station',
+        sourceLayer: source_layer,
         id: id
       }, {
         select: false
@@ -127,7 +131,7 @@ function featureUpdates(value, filtered){
     all_id.forEach(function(id){
       map.setFeatureState({
         source: 'stations',
-        sourceLayer: 'bus_station',
+        sourceLayer: source_layer,
         id: id
       }, {
         select: false
@@ -140,7 +144,7 @@ function featureUpdates(value, filtered){
 map.on('load', function(){
   map.addSource("stations", {
     "type": "vector",
-    "url": "mapbox://shihwenwutw.dwtsgvgn"
+    "url": source_url
   });
 
   map.addLayer({
@@ -150,7 +154,7 @@ map.on('load', function(){
     'layout':{
       'visibility': 'visible'
     },
-    'source-layer': 'bus_station',
+    'source-layer': source_layer,
     'paint': {
       'circle-radius': [
         'case',
@@ -205,12 +209,13 @@ map.on('load', function(){
 
   map.on('mousemove', 'station-origin', function(e){
     if (e.features.length > 0) {
+      //console.log(e.features);
       map.getCanvas().style.cursor = 'pointer';
       if (hoveredStateId) {
         // set the hover attribute to false with feature state
         map.setFeatureState({
           source: 'stations',
-          sourceLayer: 'bus_station',
+          sourceLayer: source_layer,
           id: hoveredStateId
         }, {
           hover: false
@@ -220,7 +225,7 @@ map.on('load', function(){
       hoveredStateId = e.features[0].id;
       map.setFeatureState({
         source: 'stations',
-        sourceLayer: 'bus_station',
+        sourceLayer: source_layer,
         id: hoveredStateId
       }, {
         hover: true
@@ -241,7 +246,7 @@ map.on('load', function(){
     if (hoveredStateId) {
       map.setFeatureState({
         source: 'stations',
-        sourceLayer: 'bus_station',
+        sourceLayer: source_layer,
         id: hoveredStateId
       }, {
         hover: false

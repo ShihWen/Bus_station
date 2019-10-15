@@ -242,7 +242,9 @@ map.on('load', function(){
       'circle-radius': [
         'case',
         ['boolean', ['feature-state', 'hover'], false],
-        8,
+        9,
+        ['boolean', ['feature-state', 'select'], false],
+        9,
         3
       ],
       'circle-color': [
@@ -293,6 +295,7 @@ map.on('load', function(){
 
     featureUpdates(value,filtered);
     featureUpdates_r(value,filtered_r);
+    console.log(map.getZoom());
 
   });
 

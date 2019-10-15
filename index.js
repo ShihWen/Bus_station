@@ -16,14 +16,19 @@ const source_layer = 'bus_station_greaterTPE_2';
 const source_url = "mapbox://" + "shihwenwutw.4y51xvvi"
 
 
+const source_layer_2 = 'bus_route'
+const source_url_2 = "mapbox://" + 'shihwenwutw.6d7z5jz7'
+
+
 //HOVER related
 // Target the relevant span tags in the station info div
 let stationDisplay = document.getElementById('station');
 let routeDisplay = document.getElementById('routes');
 
 //FILTER related
-// Holds visible airport features for filtering
+// Holds visible features for filtering
 let stations = [];
+let routes = [];
 
 // Create a popup, but don't add it to the map yet.
 let popup = new mapboxgl.Popup({
@@ -39,6 +44,11 @@ let filtered = [];
 let all_id = [];
 let filt_id = [];
 let res = [];
+
+let filtered_r = [];
+let all_id_r = [];
+let filt_id_r = [];
+let res_r = [];
 
 function renderListings(features) {
   // Clear any existing listings
@@ -93,16 +103,17 @@ function getUniqueFeatures(array, comparatorProperty) {
   return uniqueFeatures;
 }
 
-function featureUpdates(value, filtered){
+//Update Station Feature
+function featureUpdates(value, filtered_input){
   if(value){
     // Filter visible features that don't match the input value.
-    filtered = stations.filter(function(feature) {
+    filtered_input = stations.filter(function(feature) {
       let routes = normalize(feature.properties.routes);
       let station = normalize(feature.properties.station);
       return routes.indexOf(value) > -1 || station.indexOf(value) > -1;
     });
-    renderListings(filtered);
-    filtered.forEach(function(feature){
+    renderListings(filtered_input);
+    filtered_input.forEach(function(feature){
       filt_id.push(feature.id);
     });
     filt_id = [... new Set(filt_id)];
@@ -140,8 +151,80 @@ function featureUpdates(value, filtered){
   }
 }
 
+//Update Route Feature
+function featureUpdates_r(value, filtered_input){
+  if(value){
+    // Filter visible features that don't match the input value.
+    filtered_input = routes.filter(function(feature) {
+      let routes = normalize(feature.properties.RouteNameZ);
+      return routes.indexOf(value) > -1;
+    });
+    //renderListings(filtered);
+    filtered_input.forEach(function(feature){
+      filt_id_r.push(feature.id);
+    });
+    filt_id_r = [... new Set(filt_id_r)];
+    res_r = all_id_r.filter( function(n) { return !this.has(n) }, new Set(filt_id_r) );
+
+    filt_id_r.forEach(function(id){
+      map.setFeatureState({
+        source: 'routes',
+        sourceLayer: source_layer_2,
+        id: id
+      }, {
+        select: true
+      });
+    });
+
+    res_r.forEach(function(id){
+      map.setFeatureState({
+        source: 'routes',
+        sourceLayer: source_layer_2,
+        id: id
+      }, {
+        select: false
+      });
+    });
+  } else {
+    all_id_r.forEach(function(id){
+      map.setFeatureState({
+        source: 'routes',
+        sourceLayer: source_layer_2,
+        id: id
+      }, {
+        select: false
+      });
+    });
+  }
+}
+
 
 map.on('load', function(){
+  //Route Layer
+  map.addSource("routes", {
+    "type": "vector",
+    "url": source_url_2
+  });
+
+  map.addLayer({
+    'id': 'station-route',
+    'type': 'line',
+    'source': 'routes',
+    'layout': {
+      'visibility': 'visible'
+    },
+    'source-layer': source_layer_2,
+    'paint': {
+      'line-color': [
+        'case',
+        ['boolean', ['feature-state', 'select'], false],
+        '#dd3497',
+        'rgba(0,0,0,0)'
+      ]
+    }
+  });
+
+  //Station Layer
   map.addSource("stations", {
     "type": "vector",
     "url": source_url
@@ -159,7 +242,7 @@ map.on('load', function(){
       'circle-radius': [
         'case',
         ['boolean', ['feature-state', 'hover'], false],
-        6,
+        8,
         3
       ],
       'circle-color': [
@@ -167,49 +250,57 @@ map.on('load', function(){
         ['boolean', ['feature-state', 'hover'], false],
         'red',
         ['boolean', ['feature-state', 'select'], false],
-        'orange',
-        'rgba(255,255,255,0.75)'
+        '#ffeda0',
+        'white'
       ],
 
-      'circle-stroke-width': 0.3,
+      'circle-stroke-width': [
+        'case',
+        ['boolean', ['feature-state', 'hover'], false],
+        0.9,
+        ['boolean', ['feature-state', 'select'], false],
+        0.7,
+        0.3
+      ],
       'circle-stroke-color':[
         'case',
         ['boolean', ['feature-state', 'hover'], false],
         'black',
         ['boolean', ['feature-state', 'select'], false],
         'black',
-        'rgba(0,0,0,0.35)'
+        'rgba(0,0,0,0.25)'
       ],
     }
   });
 
   map.on('moveend', function() {
     let features = map.queryRenderedFeatures({layers: ['station-origin']});
+    let features_routes = map.queryRenderedFeatures({layers: ['station-route']});
     if (features) {
       // Populate features for the listing overlay.
       //renderListings(uniqueFeatures);
       renderListings(features);
-
-      // Clear the input container
-      //filterEl.value = '';
-
-      // Store the current features in sn `airports` variable to
-      // later use for filtering on `keyup`.
-      //airports = uniqueFeatures;
     }
     stations = features;
+    routes = features_routes;
 
     stations.forEach(function(feature){
       all_id.push(feature.id);
     });
+    routes.forEach(function(feature){
+      all_id_r.push(feature.id);
+    });
+
     featureUpdates(value,filtered);
+    featureUpdates_r(value,filtered_r);
 
   });
-  let hoveredStateId = null;
 
+
+  let hoveredStateId = null;
   map.on('mousemove', 'station-origin', function(e){
     if (e.features.length > 0) {
-      //console.log(e.features);
+      console.log(e.features);
       map.getCanvas().style.cursor = 'pointer';
       if (hoveredStateId) {
         // set the hover attribute to false with feature state
@@ -263,10 +354,17 @@ map.on('load', function(){
     value = normalize(e.target.value);
     all_id = [];
     filt_id = [];
+    all_id_r = [];
+    filt_id_r = [];
+
     stations.forEach(function(feature){
       all_id.push(feature.id);
     });
+    routes.forEach(function(feature){
+      all_id_r.push(feature.id);
+    });
     featureUpdates(value,filtered);
+    featureUpdates_r(value,filtered_r);
 
   });
   // Call this function on initialization

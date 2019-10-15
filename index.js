@@ -300,7 +300,7 @@ map.on('load', function(){
   let hoveredStateId = null;
   map.on('mousemove', 'station-origin', function(e){
     if (e.features.length > 0) {
-      console.log(e.features);
+      //console.log(e.features);
       map.getCanvas().style.cursor = 'pointer';
       if (hoveredStateId) {
         // set the hover attribute to false with feature state

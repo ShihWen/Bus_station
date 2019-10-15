@@ -3,13 +3,57 @@ body {
   padding:0;
 }
 
-#map {
-  position:absolute;
-  top:0;
-  bottom:0;
-  width:calc(100% - 200px);
-  left:200px;
+@media only screen and (min-width: 425px){
+  #map {
+    position:absolute;
+    top:0;
+    bottom:0;
+    width:calc(100% - 200px);
+    left:200px;
+  }
+
+  .map-overlay {
+      position: absolute;
+      width: 200px;
+      /*min-width: 200px;*/
+      top: 0;
+      bottom: 0;
+      left: 0;
+      font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+      background-color: #fff;
+      max-height: 100%;
+      overflow: hidden;
+  }
+
 }
+
+@media only screen and (max-width: 425px){
+  #map {
+    position:absolute;
+    top:0;
+    bottom:0;
+    width:100%;
+    height: 66%;
+    left:0;
+
+  }
+
+  .map-overlay {
+      position: absolute;
+      width: 100%;
+      height:34%;
+      /*min-width: 200px;*/
+      top: 66%;
+      bottom: 0;
+      left: 0;
+      font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+      background-color: #fff;
+      max-height: 100%;
+      overflow: hidden;
+  }
+
+}
+
 
 .stationInfo {
   position: absolute;
@@ -28,18 +72,7 @@ body {
 }
 
 
-.map-overlay {
-    position: absolute;
-    width: 200px;
-    /*min-width: 200px;*/
-    top: 0;
-    bottom: 0;
-    left: 0;
-    font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-    background-color: #fff;
-    max-height: 100%;
-    overflow: hidden;
-}
+
 
 .map-overlay fieldset {
     display: none;

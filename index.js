@@ -178,7 +178,7 @@ map.on('load', function(){
         'black',
         ['boolean', ['feature-state', 'select'], false],
         'black',
-        'rgba(0,0,0,0.15)'
+        'rgba(0,0,0,0.35)'
       ],
     }
   });

@@ -168,7 +168,7 @@ map.on('load', function(){
         'red',
         ['boolean', ['feature-state', 'select'], false],
         'orange',
-        'white'
+        'rgba(255,255,255,0.75)'
       ],
 
       'circle-stroke-width': 0.3,
@@ -178,7 +178,7 @@ map.on('load', function(){
         'black',
         ['boolean', ['feature-state', 'select'], false],
         'black',
-        'rgba(0,0,0,0.25)'
+        'rgba(0,0,0,0.15)'
       ],
     }
   });

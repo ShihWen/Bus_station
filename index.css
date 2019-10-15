@@ -115,3 +115,29 @@ body {
 .map-overlay .listing p:hover {
     background: #f0f0f0;
 }
+
+.mapboxgl-popup-content {
+    /*color: #F3F3DD;*/
+    background-color: #ffffff;
+    border-color: black;
+    border-width:1px;
+    /*box-shadow: 3px 3px 2px #8B5D33;*/
+}
+
+.mapboxgl-popup-anchor-top .mapboxgl-popup-tip,
+.mapboxgl-popup-anchor-top-left .mapboxgl-popup-tip,
+.mapboxgl-popup-anchor-top-right .mapboxgl-popup-tip {
+    border-bottom-color: #ffffff;
+    }
+.mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip,
+.mapboxgl-popup-anchor-bottom-left .mapboxgl-popup-tip,
+.mapboxgl-popup-anchor-bottom-right .mapboxgl-popup-tip {
+    border-top-color: #ffffff;
+    }
+.mapboxgl-popup-anchor-left .mapboxgl-popup-tip {
+    border-right-color: #ffffff;
+    }
+.mapboxgl-popup-anchor-right .mapboxgl-popup-tip {
+    border-left-color: #ffffff;
+
+    }

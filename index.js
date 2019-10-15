@@ -250,7 +250,7 @@ map.on('load', function(){
         ['boolean', ['feature-state', 'hover'], false],
         'red',
         ['boolean', ['feature-state', 'select'], false],
-        '#ffeda0',
+        '#fff700',
         'white'
       ],
 

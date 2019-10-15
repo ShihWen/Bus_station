@@ -242,9 +242,9 @@ map.on('load', function(){
       'circle-radius': [
         'case',
         ['boolean', ['feature-state', 'hover'], false],
-        9,
+        8,
         ['boolean', ['feature-state', 'select'], false],
-        5,
+        3.5,
         3
       ],
       'circle-color': [

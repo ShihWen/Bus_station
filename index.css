@@ -43,7 +43,7 @@ body {
   .map-overlay {
     position: absolute;
     width: 100%;
-    height:30%;
+    height:34%;
     /*min-width: 200px;*/
     top: 66%;
     bottom: 0;

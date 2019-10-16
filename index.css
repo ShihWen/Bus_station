@@ -36,7 +36,7 @@ body {
 
   div #matchBox {
     width: 50%;
-    padding-top: 10px;
+    padding-top: 5px;
     margin: 0 auto;
   }
 
@@ -44,7 +44,7 @@ body {
     display: none;
     background: #ddd;
     border: none;
-    padding: 10px;
+    padding: 10px 10px 5px 10px;
     margin: 0;
   }
 
@@ -124,14 +124,6 @@ body {
   color: #222;
   background-color: #fff;
   border-radius: 3px;
-}
-
-.map-overlay fieldset {
-  display: none;
-  background: #ddd;
-  border: none;
-  padding: 10px;
-  margin: 0;
 }
 
 #exact {

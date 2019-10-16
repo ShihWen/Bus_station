@@ -53,6 +53,10 @@ let res_r = [];
 let access = [];
 let click = false;
 
+//match type
+let exactMatch = document.getElementsByName('matchAnswer')[0].checked;
+
+
 function renderListings(features) {
   // Clear any existing listings
   listingEl.innerHTML = '';
@@ -110,8 +114,12 @@ function featureUpdates(value, filtered_input){
     filtered_input = stations.filter(function(feature) {
       let routes = normalize(feature.properties.routes);
       let station = normalize(feature.properties.station);
-      //return routes.indexOf(value) > -1 || station.indexOf(value) > -1;
-      return value in feature.properties || station.indexOf(value) > -1;
+      if(exactMatch){
+        return value in feature.properties || station.indexOf(value) > -1;
+      } else {
+        return routes.indexOf(value) > -1 || station.indexOf(value) > -1;
+      }
+
     });
     renderListings(filtered_input);
     filtered_input.forEach(function(feature){
@@ -157,16 +165,21 @@ function featureUpdates_r(value, filtered_input){
   if(value){
     // Filter visible features that don't match the input value.
     filtered_input = routes.filter(function(feature) {
-      let routes = normalize(feature.properties.RouteNameZ);
-      return value === feature.properties.RouteNameZ;
+      if(exactMatch){
+        return value === feature.properties.RouteNameZ;
+      } else {
+        let routes = normalize(feature.properties.RouteNameZ);
+        return routes.indexOf(value) > -1;
+      }
     });
+
     //renderListings(filtered);
     filtered_input.forEach(function(feature){
       filt_id_r.push(feature.id);
     });
+
     filt_id_r = [... new Set(filt_id_r)];
     res_r = all_id_r.filter( function(n) { return !this.has(n) }, new Set(filt_id_r) );
-
     filt_id_r.forEach(function(id){
       map.setFeatureState({
         source: 'routes',
@@ -636,6 +649,8 @@ map.on('load', function(){
   filterEl.addEventListener('keyup', function(e) {
     //Ture off 'click' so that the click result won't aprear
     //while input is back to empty
+    exactMatch = document.getElementsByName('matchAnswer')[0].checked;
+    console.log(exactMatch);
     click = false;
     if (clickId) {
       map.setFeatureState({
@@ -648,8 +663,11 @@ map.on('load', function(){
     }
     clickId = null;
 
-    value = e.target.value;
-    //value = normalize(e.target.value);
+    if(exactMatch){
+      value = e.target.value;
+    } else {
+      value = normalize(e.target.value);
+    }
 
     //turn off click results
     all_id_r.forEach(function(id){

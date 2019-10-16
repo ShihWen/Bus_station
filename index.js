@@ -198,6 +198,7 @@ function featureUpdates_r(value, filtered_input){
   }
 }
 
+const zoomThreshold = 11.75;
 
 map.on('load', function(){
   //Route Layer
@@ -238,6 +239,7 @@ map.on('load', function(){
       'visibility': 'visible'
     },
     'source-layer': source_layer,
+    'minzoom': zoomThreshold,
     'paint': {
       'circle-radius': [
         'case',
@@ -274,6 +276,53 @@ map.on('load', function(){
       ],
     }
   });
+
+  map.addLayer({
+    'id': 'station-origin-minZoom',
+    'type': 'circle',
+    'source': 'stations',
+    'layout':{
+      'visibility': 'visible'
+    },
+    'source-layer': source_layer,
+    'maxzoom': zoomThreshold,
+    'paint': {
+      'circle-radius': [
+        'case',
+        ['boolean', ['feature-state', 'hover'], false],
+        8,
+        ['boolean', ['feature-state', 'select'], false],
+        3.5,
+        1
+      ],
+      'circle-color': [
+        'case',
+        ['boolean', ['feature-state', 'hover'], false],
+        'red',
+        ['boolean', ['feature-state', 'select'], false],
+        '#fff700',
+        'rgba(0,0,0,0)'
+      ],
+
+      'circle-stroke-width': [
+        'case',
+        ['boolean', ['feature-state', 'hover'], false],
+        0.9,
+        ['boolean', ['feature-state', 'select'], false],
+        0.7,
+        0.3
+      ],
+      'circle-stroke-color':[
+        'case',
+        ['boolean', ['feature-state', 'hover'], false],
+        'black',
+        ['boolean', ['feature-state', 'select'], false],
+        'black',
+        'rgba(0,0,0,0.25)'
+      ],
+    }
+  });
+
 
   map.on('moveend', function() {
     let features = map.queryRenderedFeatures({layers: ['station-origin']});

@@ -116,7 +116,8 @@ function featureUpdates(value, filtered_input){
       let routes = normalize(feature.properties.routes);
       let station = normalize(feature.properties.station);
       if(exactMatch){
-        return value in feature.properties || station.indexOf(value) > -1;
+        //return value in feature.properties || station.indexOf(value) > -1;
+        return value in feature.properties || value === station;
       } else {
         return routes.indexOf(value) > -1 || station.indexOf(value) > -1;
       }
@@ -668,7 +669,6 @@ map.on('load', function(){
     //Ture off 'click' so that the click result won't aprear
     //while input is back to empty
     exactMatch = document.getElementsByName('matchAnswer')[0].checked;
-    console.log(exactMatch);
     click = false;
     if (clickId) {
       map.setFeatureState({

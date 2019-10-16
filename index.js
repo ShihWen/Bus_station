@@ -330,6 +330,8 @@ map.on('load', function(){
         8,
         ['boolean', ['feature-state', 'select'], false],
         2,
+        ['boolean', ['feature-state', 'clickMain'], false],
+        4,
         ['boolean', ['feature-state', 'click'], false],
         2,
         1
@@ -339,6 +341,8 @@ map.on('load', function(){
         ['boolean', ['feature-state', 'hover'], false],
         'red',
         ['boolean', ['feature-state', 'select'], false],
+        '#fff700',
+        ['boolean', ['feature-state', 'clickMain'], false],
         'red',
         ['boolean', ['feature-state', 'click'], false],
         '#f7fcb9',
@@ -351,6 +355,8 @@ map.on('load', function(){
         0.9,
         ['boolean', ['feature-state', 'select'], false],
         0.7,
+        ['boolean', ['feature-state', 'clickMain'], false],
+        0.7,
         ['boolean', ['feature-state', 'click'], false],
         0.7,
         0.3
@@ -360,6 +366,8 @@ map.on('load', function(){
         ['boolean', ['feature-state', 'hover'], false],
         'black',
         ['boolean', ['feature-state', 'select'], false],
+        'black',
+        ['boolean', ['feature-state', 'clickMain'], false],
         'black',
         ['boolean', ['feature-state', 'click'], false],
         'black',
@@ -384,10 +392,10 @@ map.on('load', function(){
         8,
         ['boolean', ['feature-state', 'select'], false],
         3.5,
-        ['boolean', ['feature-state', 'click'], false],
-        3.5,
         ['boolean', ['feature-state', 'clickMain'], false],
         6,
+        ['boolean', ['feature-state', 'click'], false],
+        3.5,
         3
       ],
       'circle-color': [
@@ -395,11 +403,11 @@ map.on('load', function(){
         ['boolean', ['feature-state', 'hover'], false],
         'red',
         ['boolean', ['feature-state', 'select'], false],
+        '#fff700',
+        ['boolean', ['feature-state', 'clickMain'], false],
         'red',
         ['boolean', ['feature-state', 'click'], false],
         '#f7fcb9',
-        ['boolean', ['feature-state', 'clickMain'], false],
-        'red',
         'white'
       ],
 
@@ -409,10 +417,10 @@ map.on('load', function(){
         0.9,
         ['boolean', ['feature-state', 'select'], false],
         0.7,
-        ['boolean', ['feature-state', 'click'], false],
-        0.7,
         ['boolean', ['feature-state', 'clickMain'], false],
         0.9,
+        ['boolean', ['feature-state', 'click'], false],
+        0.7,
         0.3
       ],
       'circle-stroke-color':[
@@ -490,7 +498,7 @@ map.on('load', function(){
         sourceLayer: source_layer,
         id: clickId
       }, {
-        select: true
+        clickMain: true
       });
     }
 
@@ -579,13 +587,23 @@ map.on('load', function(){
       });
 
       //Style clicked feature
+      if (clickId) {
+        map.setFeatureState({
+          source: 'stations',
+          sourceLayer: source_layer,
+          id: clickId
+        }, {
+          clickMain: false
+        });
+      }
+
       clickId = e.features[0].id;
       map.setFeatureState({
         source: 'stations',
         sourceLayer: source_layer,
         id: clickId
       }, {
-        select: true
+        clickMain: true
       });
 
       access = [];
@@ -611,10 +629,24 @@ map.on('load', function(){
       renderListings(renderListing_click);
     } else {
       click = false;
+
+
     }
+
   });
 
   filterEl.addEventListener('keyup', function(e) {
+    if (clickId) {
+      map.setFeatureState({
+        source: 'stations',
+        sourceLayer: source_layer,
+        id: clickId
+      }, {
+        clickMain: false
+      });
+    }
+    clickId = null;
+
     value = normalize(e.target.value);
 
     //turn off click results

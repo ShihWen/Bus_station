@@ -108,8 +108,9 @@ function featureUpdates(value, filtered_input){
   if(value){
     // Filter visible features that don't match the input value.
     filtered_input = stations.filter(function(feature) {
-      //let routes = normalize(feature.properties);
+      let routes = normalize(feature.properties.routes);
       let station = normalize(feature.properties.station);
+      //return routes.indexOf(value) > -1 || station.indexOf(value) > -1;
       return value in feature.properties || station.indexOf(value) > -1;
     });
     renderListings(filtered_input);
@@ -204,7 +205,7 @@ function featureUpdates_click_id(value, filteredInputPoint, filteredInputLine){
 
   //Station
   filteredInputPoint = stations.filter(function(feature) {
-    let routes = feature.properties.routes;
+    let routes = normalize(feature.properties.routes);
     let station = normalize(feature.properties.station);
     //return routes.indexOf(value) > -1 || station.indexOf(value) > -1;
     return value in feature.properties || station.indexOf(value) > -1;
@@ -220,6 +221,7 @@ function featureUpdates_click_id(value, filteredInputPoint, filteredInputLine){
   //Route
   filteredInputLine = routes.filter(function(feature) {
     let routes = normalize(feature.properties.RouteNameZ);
+    //return routes.indexOf(value) > -1;
     return value === feature.properties.RouteNameZ;
   });
 
@@ -647,6 +649,7 @@ map.on('load', function(){
     clickId = null;
 
     value = e.target.value;
+    //value = normalize(e.target.value);
 
     //turn off click results
     all_id_r.forEach(function(id){

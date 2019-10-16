@@ -460,7 +460,7 @@ map.on('load', function(){
     //and turn off click event if it's on.
     featureUpdates(value,filtered);
     featureUpdates_r(value,filtered_r);
-    console.log(map.getZoom());
+    //console.log(map.getZoom());
 
     all_id_r.forEach(function(id){
       map.setFeatureState({
@@ -627,15 +627,13 @@ map.on('load', function(){
       })
       featureUpdates_click();
       renderListings(renderListing_click);
-    } else {
-      click = false;
-
-
     }
-
   });
 
   filterEl.addEventListener('keyup', function(e) {
+    //Ture off 'click' so that the click result won't aprear
+    //while input is back to empty
+    click = false;
     if (clickId) {
       map.setFeatureState({
         source: 'stations',

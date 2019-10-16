@@ -108,9 +108,9 @@ function featureUpdates(value, filtered_input){
   if(value){
     // Filter visible features that don't match the input value.
     filtered_input = stations.filter(function(feature) {
-      let routes = normalize(feature.properties.routes);
+      //let routes = normalize(feature.properties);
       let station = normalize(feature.properties.station);
-      return routes.indexOf(value) > -1 || station.indexOf(value) > -1;
+      return value in feature.properties || station.indexOf(value) > -1;
     });
     renderListings(filtered_input);
     filtered_input.forEach(function(feature){
@@ -157,7 +157,7 @@ function featureUpdates_r(value, filtered_input){
     // Filter visible features that don't match the input value.
     filtered_input = routes.filter(function(feature) {
       let routes = normalize(feature.properties.RouteNameZ);
-      return routes.indexOf(value) > -1;
+      return value === feature.properties.RouteNameZ;
     });
     //renderListings(filtered);
     filtered_input.forEach(function(feature){
@@ -201,6 +201,7 @@ function featureUpdates_r(value, filtered_input){
 //Gether feature id on the map with corresponding routes
 let renderListing_click = [];
 function featureUpdates_click_id(value, filteredInputPoint, filteredInputLine){
+
   //Station
   filteredInputPoint = stations.filter(function(feature) {
     let routes = feature.properties.routes;
@@ -605,7 +606,7 @@ map.on('load', function(){
       }, {
         clickMain: true
       });
-
+      //Get all features on the map with selected attribu
       access = [];
       all_id = [];
       filt_id = [];
@@ -645,7 +646,7 @@ map.on('load', function(){
     }
     clickId = null;
 
-    value = normalize(e.target.value);
+    value = e.target.value;
 
     //turn off click results
     all_id_r.forEach(function(id){

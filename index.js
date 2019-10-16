@@ -222,7 +222,8 @@ function featureUpdates_click_id(value, filteredInputPoint, filteredInputLine){
     let routes = normalize(feature.properties.routes);
     let station = normalize(feature.properties.station);
     //return routes.indexOf(value) > -1 || station.indexOf(value) > -1;
-    return value in feature.properties || station.indexOf(value) > -1;
+
+    return value in feature.properties
   });
   //console.log(filteredInputPoint);
   filteredInputPoint.forEach(function(feature){

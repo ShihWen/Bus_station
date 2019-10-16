@@ -300,10 +300,14 @@ function OnChangeCheckbox (checkbox) {
   if (checkbox.checked) {
     value = '';
     filterEl.value = '';
+    featureUpdates(value,filtered);
+    featureUpdates_r(value,filtered_r);
   }
   else {
     value = '';
     filterEl.value = '';
+    featureUpdates(value,filtered);
+    featureUpdates_r(value,filtered_r);
   }
 }
 

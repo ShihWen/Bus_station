@@ -6,7 +6,7 @@ let map = new mapboxgl.Map({
   style: 'mapbox://styles/shihwenwutw/ck1myebc70e851co3unmss075', // stylesheet location
   center: [121.55244833917465, 25.03793365035355], // starting position [lng, lat]
   zoom: 12,
-  minZoom: 10,
+  minZoom: 11,
   maxZoom: 17 // starting zoom
 });
 let nav = new mapboxgl.NavigationControl();

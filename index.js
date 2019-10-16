@@ -300,14 +300,38 @@ function featureUpdates_click(){
 
 function OnChangeCheckbox (checkbox) {
   if (checkbox.checked) {
-    value = '';
-    filterEl.value = '';
+    //value = '';
+    //filterEl.value = '';
+    all_id = [];
+    filt_id = [];
+    all_id_r = [];
+    filt_id_r = [];
+
+    stations.forEach(function(feature){
+      all_id.push(feature.id);
+    });
+    routes.forEach(function(feature){
+      all_id_r.push(feature.id);
+    });
+    exactMatch = document.getElementsByName('matchAnswer')[0].checked;
     featureUpdates(value,filtered);
     featureUpdates_r(value,filtered_r);
   }
   else {
-    value = '';
-    filterEl.value = '';
+    //value = '';
+    //filterEl.value = '';
+    all_id = [];
+    filt_id = [];
+    all_id_r = [];
+    filt_id_r = [];
+
+    stations.forEach(function(feature){
+      all_id.push(feature.id);
+    });
+    routes.forEach(function(feature){
+      all_id_r.push(feature.id);
+    });
+    exactMatch = document.getElementsByName('matchAnswer')[0].checked;
     featureUpdates(value,filtered);
     featureUpdates_r(value,filtered_r);
   }
@@ -706,12 +730,11 @@ map.on('load', function(){
         click: false
       });
     });
-
+    //Empty id list before new search based on each keyin 
     all_id = [];
     filt_id = [];
     all_id_r = [];
     filt_id_r = [];
-
 
     stations.forEach(function(feature){
       all_id.push(feature.id);

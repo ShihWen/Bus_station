@@ -11,11 +11,10 @@ let map = new mapboxgl.Map({
 });
 let nav = new mapboxgl.NavigationControl();
 map.addControl(nav, 'bottom-right');
-
+//Station layer
 const source_layer = 'bus_station_greaterTPE_2';
 const source_url = "mapbox://" + "shihwenwutw.4y51xvvi"
-
-
+//Route layer
 const source_layer_2 = 'bus_route'
 const source_url_2 = "mapbox://" + 'shihwenwutw.6d7z5jz7'
 
@@ -38,7 +37,7 @@ let popup = new mapboxgl.Popup({
 let filterEl = document.getElementById('feature-filter');
 let listingEl = document.getElementById('feature-listing');
 
-//feature improvement
+//selected feature
 let value = '';
 let filtered = [];
 let all_id = [];
@@ -49,6 +48,10 @@ let filtered_r = [];
 let all_id_r = [];
 let filt_id_r = [];
 let res_r = [];
+
+//clicked feature
+let access = [];
+let click = false;
 
 function renderListings(features) {
   // Clear any existing listings
@@ -74,11 +77,8 @@ function renderListings(features) {
     empty.textContent = 'No results, drag or change words to populate';
     listingEl.appendChild(empty);
 
-    // Hide the filter input
-    //filterEl.parentNode.style.display = 'none';
-
     // remove features filter
-    map.setFilter('station-origin', ['has', 'routes']);
+    map.setFilter('station-access', ['has', 'routes']);
   }
 }
 
@@ -198,6 +198,87 @@ function featureUpdates_r(value, filtered_input){
   }
 }
 
+//Gether feature id on the map with corresponding routes
+let renderListing_click = [];
+function featureUpdates_click_id(value, filteredInputPoint, filteredInputLine){
+  //Station
+  filteredInputPoint = stations.filter(function(feature) {
+    let routes = feature.properties.routes;
+    let station = normalize(feature.properties.station);
+    //return routes.indexOf(value) > -1 || station.indexOf(value) > -1;
+    return value in feature.properties || station.indexOf(value) > -1;
+  });
+  //console.log(filteredInputPoint);
+  filteredInputPoint.forEach(function(feature){
+    filt_id.push(feature.id);
+    renderListing_click.push(feature);
+  });
+  filt_id = [... new Set(filt_id)];
+  renderListing_click = [... new Set(renderListing_click)];
+
+  //Route
+  filteredInputLine = routes.filter(function(feature) {
+    let routes = normalize(feature.properties.RouteNameZ);
+    return value === feature.properties.RouteNameZ;
+  });
+
+  filteredInputLine.forEach(function(feature){
+    filt_id_r.push(feature.id);
+  });
+  filt_id_r = [... new Set(filt_id_r)];
+}
+
+//Generate features except from featureUpdates_click_id
+function featureUpdates_res_id(){
+  res = all_id.filter( function(n) { return !this.has(n) }, new Set(filt_id) );
+  res_r = all_id_r.filter( function(n) { return !this.has(n) }, new Set(filt_id_r) );
+};
+
+//Update feature status
+function featureUpdates_click(){
+  filt_id_r.forEach(function(id){
+    map.setFeatureState({
+      source: 'routes',
+      sourceLayer: source_layer_2,
+      id: id
+    }, {
+      click: true
+    });
+  });
+
+  res_r.forEach(function(id){
+    map.setFeatureState({
+      source: 'routes',
+      sourceLayer: source_layer_2,
+      id: id
+    }, {
+      click: false
+    });
+  });
+
+  filt_id.forEach(function(id){
+    map.setFeatureState({
+      source: 'stations',
+      sourceLayer: source_layer,
+      id: id
+    }, {
+      click: true
+    });
+  });
+
+  res.forEach(function(id){
+    map.setFeatureState({
+      source: 'stations',
+      sourceLayer: source_layer,
+      id: id
+    }, {
+      click: false
+    });
+  });
+
+
+}
+
 const zoomThreshold = 11.75;
 
 map.on('load', function(){
@@ -220,19 +301,75 @@ map.on('load', function(){
         'case',
         ['boolean', ['feature-state', 'select'], false],
         '#dd3497',
+        ['boolean', ['feature-state', 'click'], false],
+        '#8856a7',
         'rgba(0,0,0,0)'
       ]
     }
   });
 
-  //Station Layer
+  //Station Layers
   map.addSource("stations", {
     "type": "vector",
     "url": source_url
   });
-
+  //Station Layer in smaller zoom
   map.addLayer({
-    'id': 'station-origin',
+    'id': 'station-origin-smallZoom',
+    'type': 'circle',
+    'source': 'stations',
+    'layout':{
+      'visibility': 'visible'
+    },
+    'source-layer': source_layer,
+    'maxzoom': zoomThreshold,
+    'paint': {
+      'circle-radius': [
+        'case',
+        ['boolean', ['feature-state', 'hover'], false],
+        8,
+        ['boolean', ['feature-state', 'select'], false],
+        2,
+        ['boolean', ['feature-state', 'click'], false],
+        2,
+        1
+      ],
+      'circle-color': [
+        'case',
+        ['boolean', ['feature-state', 'hover'], false],
+        'red',
+        ['boolean', ['feature-state', 'select'], false],
+        'red',
+        ['boolean', ['feature-state', 'click'], false],
+        '#f7fcb9',
+        'rgba(0,0,0,0)'
+      ],
+
+      'circle-stroke-width': [
+        'case',
+        ['boolean', ['feature-state', 'hover'], false],
+        0.9,
+        ['boolean', ['feature-state', 'select'], false],
+        0.7,
+        ['boolean', ['feature-state', 'click'], false],
+        0.7,
+        0.3
+      ],
+      'circle-stroke-color':[
+        'case',
+        ['boolean', ['feature-state', 'hover'], false],
+        'black',
+        ['boolean', ['feature-state', 'select'], false],
+        'black',
+        ['boolean', ['feature-state', 'click'], false],
+        'black',
+        'rgba(0,0,0,0.25)'
+      ],
+    }
+  });
+  //Station Layer in larger zoom
+  map.addLayer({
+    'id': 'station-access',
     'type': 'circle',
     'source': 'stations',
     'layout':{
@@ -247,6 +384,10 @@ map.on('load', function(){
         8,
         ['boolean', ['feature-state', 'select'], false],
         3.5,
+        ['boolean', ['feature-state', 'click'], false],
+        3.5,
+        ['boolean', ['feature-state', 'clickMain'], false],
+        6,
         3
       ],
       'circle-color': [
@@ -254,7 +395,11 @@ map.on('load', function(){
         ['boolean', ['feature-state', 'hover'], false],
         'red',
         ['boolean', ['feature-state', 'select'], false],
-        '#fff700',
+        'red',
+        ['boolean', ['feature-state', 'click'], false],
+        '#f7fcb9',
+        ['boolean', ['feature-state', 'clickMain'], false],
+        'red',
         'white'
       ],
 
@@ -264,52 +409,10 @@ map.on('load', function(){
         0.9,
         ['boolean', ['feature-state', 'select'], false],
         0.7,
-        0.3
-      ],
-      'circle-stroke-color':[
-        'case',
-        ['boolean', ['feature-state', 'hover'], false],
-        'black',
-        ['boolean', ['feature-state', 'select'], false],
-        'black',
-        'rgba(0,0,0,0.25)'
-      ],
-    }
-  });
-
-  map.addLayer({
-    'id': 'station-origin-minZoom',
-    'type': 'circle',
-    'source': 'stations',
-    'layout':{
-      'visibility': 'visible'
-    },
-    'source-layer': source_layer,
-    'maxzoom': zoomThreshold,
-    'paint': {
-      'circle-radius': [
-        'case',
-        ['boolean', ['feature-state', 'hover'], false],
-        8,
-        ['boolean', ['feature-state', 'select'], false],
-        3.5,
-        1
-      ],
-      'circle-color': [
-        'case',
-        ['boolean', ['feature-state', 'hover'], false],
-        'red',
-        ['boolean', ['feature-state', 'select'], false],
-        '#fff700',
-        'rgba(0,0,0,0)'
-      ],
-
-      'circle-stroke-width': [
-        'case',
-        ['boolean', ['feature-state', 'hover'], false],
-        0.9,
-        ['boolean', ['feature-state', 'select'], false],
+        ['boolean', ['feature-state', 'click'], false],
         0.7,
+        ['boolean', ['feature-state', 'clickMain'], false],
+        0.9,
         0.3
       ],
       'circle-stroke-color':[
@@ -317,6 +420,8 @@ map.on('load', function(){
         ['boolean', ['feature-state', 'hover'], false],
         'black',
         ['boolean', ['feature-state', 'select'], false],
+        'black',
+        ['boolean', ['feature-state', 'click'], false],
         'black',
         'rgba(0,0,0,0.25)'
       ],
@@ -325,7 +430,8 @@ map.on('load', function(){
 
 
   map.on('moveend', function() {
-    let features = map.queryRenderedFeatures({layers: ['station-origin']});
+    //Get features after 'moveend'
+    let features = map.queryRenderedFeatures({layers: ['station-access']});
     let features_routes = map.queryRenderedFeatures({layers: ['station-route']});
     if (features) {
       // Populate features for the listing overlay.
@@ -334,7 +440,7 @@ map.on('load', function(){
     }
     stations = features;
     routes = features_routes;
-
+    //Get all feature id after moveend
     stations.forEach(function(feature){
       all_id.push(feature.id);
     });
@@ -342,15 +448,58 @@ map.on('load', function(){
       all_id_r.push(feature.id);
     });
 
+    //Update map according to search value while moving map
+    //and turn off click event if it's on.
     featureUpdates(value,filtered);
     featureUpdates_r(value,filtered_r);
     console.log(map.getZoom());
+
+    all_id_r.forEach(function(id){
+      map.setFeatureState({
+        source: 'routes',
+        sourceLayer: source_layer_2,
+        id: id
+      }, {
+        click: false
+      });
+    });
+    all_id.forEach(function(id){
+      map.setFeatureState({
+        source: 'stations',
+        sourceLayer: source_layer,
+        id: id
+      }, {
+        click: false
+      });
+    });
+
+    //Update click result only if there is no value in search box
+    if(!value && click === true){
+      renderListing_click = [];
+      access.forEach(function(routeInStation){
+        featureUpdates_click_id(routeInStation,filtered,filtered_r);
+        featureUpdates_res_id();
+      })
+      featureUpdates_click();
+      renderListings(renderListing_click);
+
+    }
+    if(clickId){
+      map.setFeatureState({
+        source: 'stations',
+        sourceLayer: source_layer,
+        id: clickId
+      }, {
+        select: true
+      });
+    }
+
 
   });
 
 
   let hoveredStateId = null;
-  map.on('mousemove', 'station-origin', function(e){
+  map.on('mousemove', 'station-access', function(e){
     if (e.features.length > 0) {
       //console.log(e.features);
       map.getCanvas().style.cursor = 'pointer';
@@ -384,7 +533,7 @@ map.on('load', function(){
 
   // When the mouse leaves the station-origin layer, update the feature state of the
   // previously hovered feature.
-  map.on("mouseleave", "station-origin", function() {
+  map.on("mouseleave", "station-access", function() {
     map.getCanvas().style.cursor = '';
     if (hoveredStateId) {
       map.setFeatureState({
@@ -402,12 +551,97 @@ map.on('load', function(){
     popup.remove();
   });
 
+  let clickId = null;
+  map.on("click", "station-access", function(e){
+    if (e.features.length > 0) {
+      click = true;
+      filterEl.value = '';
+      value = '';
+      //turn off select results
+      all_id_r.forEach(function(id){
+        map.setFeatureState({
+          source: 'routes',
+          sourceLayer: source_layer_2,
+          id: id
+        }, {
+          select: false
+        });
+      });
+
+      all_id.forEach(function(id){
+        map.setFeatureState({
+          source: 'stations',
+          sourceLayer: source_layer,
+          id: id
+        }, {
+          select: false
+        });
+      });
+
+      //Style clicked feature
+      clickId = e.features[0].id;
+      map.setFeatureState({
+        source: 'stations',
+        sourceLayer: source_layer,
+        id: clickId
+      }, {
+        select: true
+      });
+
+      access = [];
+      all_id = [];
+      filt_id = [];
+      all_id_r = [];
+      filt_id_r = [];
+      renderListing_click = [];
+
+      access = e.features[0].properties.routes.replace(/"|\[|\]/g,'').split(',');
+      stations.forEach(function(feature){
+        all_id.push(feature.id);
+      });
+      routes.forEach(function(feature){
+        all_id_r.push(feature.id);
+      });
+
+      access.forEach(function(value){
+        featureUpdates_click_id(value,filtered,filtered_r);
+        featureUpdates_res_id();
+      })
+      featureUpdates_click();
+      renderListings(renderListing_click);
+    } else {
+      click = false;
+    }
+  });
+
   filterEl.addEventListener('keyup', function(e) {
     value = normalize(e.target.value);
+
+    //turn off click results
+    all_id_r.forEach(function(id){
+      map.setFeatureState({
+        source: 'routes',
+        sourceLayer: source_layer_2,
+        id: id
+      }, {
+        click: false
+      });
+    });
+    all_id.forEach(function(id){
+      map.setFeatureState({
+        source: 'stations',
+        sourceLayer: source_layer,
+        id: id
+      }, {
+        click: false
+      });
+    });
+
     all_id = [];
     filt_id = [];
     all_id_r = [];
     filt_id_r = [];
+
 
     stations.forEach(function(feature){
       all_id.push(feature.id);

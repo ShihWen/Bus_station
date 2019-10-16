@@ -3,7 +3,7 @@ body {
   padding:0;
 }
 
-@media only screen and (min-width: 425px){
+@media only screen and (min-width: 426px){
   #map {
     position:absolute;
     top:0;
@@ -23,6 +23,29 @@ body {
     background-color: #fff;
     max-height: 100%;
     overflow: hidden;
+  }
+
+  .map-overlay input {
+    display: block;
+    border: none;
+    width: 75%;
+    border-radius: 3px;
+    padding: 10px;
+    margin: 0 auto;
+  }
+
+  div #matchBox {
+    width: 50%;
+    padding-top: 10px;
+    margin: 0 auto;
+  }
+
+  .map-overlay fieldset {
+    display: none;
+    background: #ddd;
+    border: none;
+    padding: 10px;
+    margin: 0;
   }
 
 
@@ -53,6 +76,36 @@ body {
     max-height: 100%;
     overflow: hidden;
   }
+  .map-overlay fieldset {
+    display: inline-flex;
+    align-items: center;
+    background: #ddd;
+    border: none;
+    padding: 10px;
+    margin: 0;
+  }
+
+  .map-overlay input {
+    display: inline-block;
+    border: none;
+    width: 65%;
+    border-radius: 3px;
+    padding: 5px;
+    /*margin: 0 auto;*/
+  }
+
+  div #matchBox {
+    position: relative;
+    top: 3px;
+    /*border: 1px solid black;*/
+    display: inline-flex;
+    justify-content: center;
+    width: 30%;
+  }
+
+  div #matchBox input {
+    margin: 5px 5px 0 5px;
+  }
 
 
 }
@@ -79,21 +132,6 @@ body {
   border: none;
   padding: 10px;
   margin: 0;
-}
-
-.map-overlay input {
-  display: block;
-  border: none;
-  width: 75%;
-  border-radius: 3px;
-  padding: 10px;
-  margin: 0 auto;
-}
-
-div #matchBox {
-  width: 50%;
-  padding-top: 10px;
-  margin: 0 auto;
 }
 
 #exact {

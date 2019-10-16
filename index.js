@@ -36,6 +36,7 @@ let popup = new mapboxgl.Popup({
 
 let filterEl = document.getElementById('feature-filter');
 let listingEl = document.getElementById('feature-listing');
+let checkBoxEl = document.getElementById('exact');
 
 //selected feature
 let value = '';
@@ -294,6 +295,18 @@ function featureUpdates_click(){
 
 
 }
+
+function OnChangeCheckbox (checkbox) {
+  if (checkbox.checked) {
+    value = '';
+    filterEl.value = '';
+  }
+  else {
+    value = '';
+    filterEl.value = '';
+  }
+}
+
 
 const zoomThreshold = 11.75;
 
@@ -705,6 +718,8 @@ map.on('load', function(){
     featureUpdates_r(value,filtered_r);
 
   });
+
+
   // Call this function on initialization
   // passing an empty array to render an empty state
   renderListings([]);

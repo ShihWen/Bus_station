@@ -114,7 +114,7 @@ function getUniqueFeatures(array, comparatorProperty) {
   });
 
   return uniqueFeatures;
-}
+};
 
 //Update Station Feature
 function featureUpdates(value, filtered_input){
@@ -168,7 +168,7 @@ function featureUpdates(value, filtered_input){
       });
     });
   }
-}
+};
 
 //Update Route Feature
 function featureUpdates_r(value, filtered_input){
@@ -220,7 +220,7 @@ function featureUpdates_r(value, filtered_input){
       });
     });
   }
-}
+};
 
 //Gether feature id on the map with corresponding routes
 let renderListing_click = [];
@@ -304,7 +304,7 @@ function featureUpdates_click(){
   });
 
 
-}
+};
 
 
 let label_colors = document.getElementsByClassName("dir_style");
@@ -371,99 +371,88 @@ let radios = document.getElementsByName('direction');
 let all_id_dir = [];
 let filt_id_dir = [];
 let res_id_dir = [];
-function OnChangeRadioBox(checkbox) {
-  all_id_dir = [];
+let filteredOnRoutes = [];
+
+function directionListGenerator(direction, filtered_input){
+  filteredOnRoutes = [];
   filt_id_dir = [];
-  res_id_dir = [];
-  direction_button = true;
-  stations = features;
-  stations.forEach(function(feature){
-    all_id_dir.push(feature.id);
-  });
-  let filtered_dir = stations.filter(function(feature) {
-    let station = normalize(feature.properties.station);
-    return value in feature.properties || value === station;
-  });
-
-  //Direction (integer, optional):
-  //去返程 : [0:'去程',1:'返程',2:'迴圈',255:'未知'] ,
-  let filteredOnRoutes = [];
-  for (var i = 0, length = radios.length; i < length; i++) {
-    if (radios[0].checked) {
-
-      filteredOnRoutes = [];
-      filt_id_dir = [];
-      //Get station with direction value as 0
-      filtered_dir.forEach(function(feature){
-        let routeDir_text = feature.properties[value].replace(/{|}|\"/g,'');
-        if(routeDir_text.includes('dirA:0')||routeDir_text.includes('dirB:0')){
-          filteredOnRoutes.push(feature)
-        }
-      });
-      renderListings(filteredOnRoutes);
-      filteredOnRoutes.forEach(function(feature){
-        filt_id_dir.push(feature.id);
-      });
-      res_dir = all_id_dir.filter( function(n) { return !this.has(n) }, new Set(filt_id_dir));
-
-      break;
-
-    } else if (radios[1].checked){
-      filteredOnRoutes = [];
-      filt_id_dir = [];
-      //Get station with direction value as 1;
-      filtered_dir.forEach(function(feature){
-        let routeDir_text = feature.properties[value].replace(/{|}|\"/g,'');
-        if(routeDir_text.includes('dirA:1')||routeDir_text.includes('dirB:1')){
-          //console.log(feature.properties.station);
-          filteredOnRoutes.push(feature)
-        }
-      });
-      renderListings(filteredOnRoutes);
-      filteredOnRoutes.forEach(function(feature){
-        filt_id_dir.push(feature.id);
-      });
-      res_dir = all_id_dir.filter( function(n) { return !this.has(n) }, new Set(filt_id_dir));
-
-      break;
-
-    } else if (radios[2].checked){
-
-      filteredOnRoutes = [];
-      filt_id_dir = [];
-      filtered_dir.forEach(function(feature){
-          filteredOnRoutes.push(feature)
-      });
-      renderListings(filteredOnRoutes);
-      filteredOnRoutes.forEach(function(feature){
-        filt_id_dir.push(feature.id);
-      });
-      res_dir = all_id_dir.filter( function(n) { return !this.has(n) }, new Set(filt_id_dir));
-
-      break;
-
+  //Get station with direction value as 0
+  filtered_input.forEach(function(feature){
+    let routeDir_text = feature.properties[value].replace(/{|}|\"/g,'');
+    if(routeDir_text.includes(`dirA:${direction}`)||routeDir_text.includes(`dirB:${direction}`)){
+      filteredOnRoutes.push(feature)
     }
+  });
+  renderListings(filteredOnRoutes);
+  filteredOnRoutes.forEach(function(feature){
+    filt_id_dir.push(feature.id);
+  });
+  res_dir = all_id_dir.filter( function(n) { return !this.has(n) }, new Set(filt_id_dir));
+
+}
+
+function OnChangeRadioBox(checkbox) {
+  if(value){
+    all_id_dir = [];
+    filt_id_dir = [];
+    res_id_dir = [];
+    direction_button = true;
+    stations = features;
+    stations.forEach(function(feature){
+      all_id_dir.push(feature.id);
+    });
+    let filtered_dir = stations.filter(function(feature) {
+      let station = normalize(feature.properties.station);
+      return value in feature.properties || value === station;
+    });
+
+    //Direction (integer, optional):
+    //去返程 : [0:'去程',1:'返程',2:'迴圈',255:'未知'] ,
+    for (var i = 0, length = radios.length; i < length; i++) {
+      if (radios[0].checked) {
+        directionListGenerator('0',filtered_dir);
+        break;
+
+      } else if (radios[1].checked){
+        directionListGenerator('1',filtered_dir);
+        break;
+
+      } else if (radios[2].checked){
+        directionListGenerator('',filtered_dir);
+        break;
+
+      }
+    }
+    filt_id_dir.forEach(function(id){
+      map.setFeatureState({
+        source: 'stations',
+        sourceLayer: source_layer,
+        id: id
+      }, {
+        select: true
+      });
+    });
+
+    res_dir.forEach(function(id){
+      map.setFeatureState({
+        source: 'stations',
+        sourceLayer: source_layer,
+        id: id
+      }, {
+        select: false
+      });
+    });
+  } else {
+    all_id_dir.forEach(function(id){
+      map.setFeatureState({
+        source: 'stations',
+        sourceLayer: source_layer,
+        id: id
+      }, {
+        select: false
+      });
+    });
   }
-  filt_id_dir.forEach(function(id){
-    map.setFeatureState({
-      source: 'stations',
-      sourceLayer: source_layer,
-      id: id
-    }, {
-      select: true
-    });
-  });
-
-  res_dir.forEach(function(id){
-    map.setFeatureState({
-      source: 'stations',
-      sourceLayer: source_layer,
-      id: id
-    }, {
-      select: false
-    });
-  });
-
 }
 
 
@@ -695,40 +684,8 @@ map.on('load', function(){
     }
 
     if(direction_button){
-      if(value){
-        filt_id_dir.forEach(function(id){
-          map.setFeatureState({
-            source: 'stations',
-            sourceLayer: source_layer,
-            id: id
-          }, {
-            select: true
-          });
-        });
-
-        res_dir.forEach(function(id){
-          map.setFeatureState({
-            source: 'stations',
-            sourceLayer: source_layer,
-            id: id
-          }, {
-            select: false
-          });
-        });
-      } else {
-        all_id_dir.forEach(function(id){
-          map.setFeatureState({
-            source: 'stations',
-            sourceLayer: source_layer,
-            id: id
-          }, {
-            select: false
-          });
-        });
-      }
+      OnChangeRadioBox();
     }
-
-
   });
 
 

@@ -300,8 +300,20 @@ function featureUpdates_click(){
 
 }
 
+
+let label_colors = document.getElementsByClassName("dir_style");
 function OnChangeCheckbox (checkbox) {
   if (checkbox.checked) {
+    //Default check 'both' direction, and black direction buttons
+    document.getElementById("dir2").checked = true;
+    for(var i=0; i<radios.length; i++) {
+      radios[i].disabled=false;
+    }
+
+    for(var i=0; i<label_colors.length; i++) {
+      label_colors[i].style.color = 'black';
+    }
+
     //value = '';
     //filterEl.value = '';
     all_id = [];
@@ -320,6 +332,15 @@ function OnChangeCheckbox (checkbox) {
     featureUpdates_r(value,filtered_r);
   }
   else {
+    document.getElementById("dir2").checked = true;
+    for(var i=0; i<radios.length; i++) {
+      radios[i].disabled=true;
+    }
+
+    for(var i=0; i<label_colors.length; i++) {
+      label_colors[i].style.color = 'grey';
+    }
+
     //value = '';
     //filterEl.value = '';
     all_id = [];
@@ -337,6 +358,28 @@ function OnChangeCheckbox (checkbox) {
     featureUpdates(value,filtered);
     featureUpdates_r(value,filtered_r);
   }
+}
+
+let radios = document.getElementsByName('direction');
+function OnChangeRadioBox(checkbox) {
+  for (var i = 0, length = radios.length; i < length; i++) {
+    if (radios[0].checked) {
+      console.log(radios[0].value);
+      break;
+
+    } else if (radios[1].checked){
+      console.log(radios[1].value);
+      break;
+
+    } else if (radios[2].checked){
+      console.log(radios[2].value);
+      break;
+      
+    }
+  }
+
+
+
 }
 
 
@@ -749,6 +792,15 @@ map.on('load', function(){
     featureUpdates_r(value,filtered_r);
 
   });
+
+  // Direction selectors
+  document.getElementById("dir2").checked = true;
+  for(var i=0; i<radios.length; i++) {
+    radios[i].disabled=true;
+  }
+  for(var i=0; i<label_colors.length; i++) {
+    label_colors[i].style.color = 'grey';
+  }
 
 
   // Call this function on initialization

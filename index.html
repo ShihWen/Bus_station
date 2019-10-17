@@ -26,13 +26,13 @@
           <label for="exact">exact match</label>
         </div>
         <div id='direction'>
-          <label>Direction:</label>
-          <input type="radio" id="direction0" name="direction" value="dir0" onclick="#">
-          <label for="direction0">Back</label>
-          <input type="radio" id="direction1" name="direction" value="dir1" onclick="#">
-          <label for="direction1">To</label>
-          <input type="radio" id="direction2" name="direction" value="dir2" onclick="#">
-          <label for="direction2">Both</label>
+          <label class='dir_style'>Direction:</label>
+          <input type="radio" class="direction" name="direction" id='dir0' value="dir0" onclick="OnChangeRadioBox(this)">
+          <label class='dir_style' for="direction0">Back</label>
+          <input type="radio" class="direction" name="direction" id='dir1' value="dir1" onclick="OnChangeRadioBox(this)">
+          <label class='dir_style' for="direction1">To</label>
+          <input type="radio" class="direction" name="direction" id='dir2' value="dir2" onclick="OnChangeRadioBox(this)" checked>
+          <label class='dir_style' for="direction2">Both</label>
         </div>
     </fieldset>
     <div id='feature-listing' class='listing'></div>

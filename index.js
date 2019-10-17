@@ -81,6 +81,10 @@ function renderListings(features) {
         .addTo(map);
       });
       listingEl.appendChild(item);
+
+      item.addEventListener('mouseleave',function(){
+        popup.remove();
+      });
     });
 
     // Show the filter input
@@ -92,6 +96,46 @@ function renderListings(features) {
 
     // remove features filter
     map.setFilter('station-access', ['has', 'routes']);
+  }
+}
+
+function renderListingsDirection(){
+  if(radios[0].checked){
+    //console.log(filteredOnRoutes);
+    let itemBag = {};
+    filteredOnRoutes.forEach(function(feature) {
+      let stopSeq = '';
+      let prop = feature.properties;
+      let stopInfo = prop[value].replace(/"|{|}/g,'')
+      let item = document.createElement('p');
+      item.textContent = prop.station;
+
+      if(stopInfo.indexOf('dirA:0') !== -1){
+        //console.log('A',stopInfo);
+        stopSeq = parseInt(stopInfo.substring('dirA:0,seqA:'.length, stopInfo.length),10);
+      } else if(stopInfo.indexOf('dirB:0') !== -1){
+        //console.log('B',stopInfo);
+        stopSeq = parseInt(stopInfo.substring('dirB:0,seqB:'.length, stopInfo.length),10);
+      }
+      item.insertAdjacentHTML('beforeend', `<span class="sideList">${stopSeq}</span>`);
+      itemBag[stopSeq] = item
+      /*
+      item.addEventListener('mouseover', function() {
+        // Highlight corresponding feature on the map
+        popup.setLngLat(feature.geometry.coordinates)
+        .setText(feature.properties.station + ' (' + feature.properties.routes.replace(/"|\[|\]/g,'').replace(/,/g,', ') + ')')
+        .addTo(map);
+      });
+
+      listingEl.appendChild(item);
+      */
+    console.log(itemBag);
+
+    });
+
+    // Show the filter input
+    filterEl.parentNode.style.display = 'block';
+
   }
 }
 
@@ -744,6 +788,17 @@ map.on('load', function(){
 
   let clickId = null;
   map.on("click", "station-access", function(e){
+    //disabled exactMactch and directions while clicking
+    document.getElementsByName('matchAnswer')[0].checked = false;
+    document.getElementById("dir2").checked = true;
+    for(var i=0; i<radios.length; i++) {
+      radios[i].disabled=true;
+    }
+    for(var i=0; i<label_colors.length; i++) {
+      label_colors[i].style.color = 'grey';
+    }
+
+
     if (e.features.length > 0) {
       //console.log(e.features);
       click = true;

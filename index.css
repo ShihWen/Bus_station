@@ -26,7 +26,7 @@ body {
   }
 
   .map-overlay input {
-    display: block;
+    display: inline;
     border: none;
     width: 75%;
     border-radius: 3px;
@@ -38,6 +38,22 @@ body {
     width: 50%;
     padding-top: 5px;
     margin: 0 auto;
+  }
+
+  div #direction{
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  div #direction #direction0,
+  div #direction #direction1,
+  div #direction #direction2{
+    width: 10px;
+    padding: 0 20px;
+  }
+
+  div #direction label{
+    padding-right: 2px;
   }
 
   .map-overlay fieldset {
@@ -83,8 +99,8 @@ body {
     overflow: hidden;
   }
   .map-overlay fieldset {
-    display: inline-flex;
-    align-items: center;
+    /*display: inline-flex;*/
+    /*align-items: center;*/
     background: #ddd;
     border: none;
     padding: 10px;
@@ -94,7 +110,7 @@ body {
   .map-overlay input {
     display: inline-block;
     border: none;
-    width: 65%;
+    width: 60%;
     border-radius: 3px;
     padding: 5px;
     /*margin: 0 auto;*/
@@ -111,6 +127,31 @@ body {
 
   div #matchBox input {
     margin: 5px 5px 0 5px;
+  }
+
+  div #matchBox {
+    width: 35%;
+    padding-top: 5px;
+    margin: 0 auto;
+  }
+
+  div #direction{
+    width: 70%;
+    margin: 0 auto;
+  }
+
+  div #direction #direction0,
+  div #direction #direction1,
+  div #direction #direction2{
+    position: relative;
+    top: 3px;
+    width: 10px;
+    padding: 0 20px;
+
+  }
+
+  div #direction label{
+    padding-right: 1%;
   }
 
   .map-overlay .listing {

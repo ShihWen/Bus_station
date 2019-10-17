@@ -12,8 +12,8 @@ let map = new mapboxgl.Map({
 let nav = new mapboxgl.NavigationControl();
 map.addControl(nav, 'bottom-right');
 //Station layer
-const source_layer = 'bus_station_greaterTPE_2';
-const source_url = "mapbox://" + "shihwenwutw.4y51xvvi"
+const source_layer = 'stationWithNum';
+const source_url = "mapbox://" + "shihwenwutw.an0gsajh"
 //Route layer
 const source_layer_2 = 'bus_route'
 const source_url_2 = "mapbox://" + 'shihwenwutw.6d7z5jz7'
@@ -66,6 +66,8 @@ function renderListings(features) {
       let prop = feature.properties;
       let item = document.createElement('p');
       item.textContent = prop.station;
+
+      //item.insertAdjacentHTML('beforeend', '<span>'+)
       item.addEventListener('mouseover', function() {
         // Highlight corresponding feature on the map
         popup.setLngLat(feature.geometry.coordinates)
@@ -621,6 +623,7 @@ map.on('load', function(){
   let clickId = null;
   map.on("click", "station-access", function(e){
     if (e.features.length > 0) {
+      //console.log(e.features);
       click = true;
       filterEl.value = '';
       value = '';
@@ -730,7 +733,7 @@ map.on('load', function(){
         click: false
       });
     });
-    //Empty id list before new search based on each keyin 
+    //Empty id list before new search based on each keyin
     all_id = [];
     filt_id = [];
     all_id_r = [];

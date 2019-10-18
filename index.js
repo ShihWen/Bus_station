@@ -1170,7 +1170,7 @@ map.on('load', function(){
         sourceLayer: source_layer,
         id: edgeEndId
       }, {
-        edge: true
+        edge: false
       });
     }
     if(edgeStartId){
@@ -1179,9 +1179,11 @@ map.on('load', function(){
         sourceLayer: source_layer,
         id: edgeStartId
       }, {
-        edge: true
+        edge: false
       });
     }
+    edgeStartId = null;
+    edgeEndId = null;
 
     //Empty id list before new search based on each keyin
     all_id = [];

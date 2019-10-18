@@ -94,11 +94,13 @@ function renderListings(features) {
       map.setFeatureState({
         source: 'stations',
         sourceLayer: source_layer,
-        id: edgeEndId
+        id: edgeStartId
       }, {
         edge: false
       });
     }
+    edgeEndId = null;
+    edgeStartId = null;
 
     filteredOnRoutes.forEach(function(feature) {
       let stopSeq = '';
@@ -121,6 +123,10 @@ function renderListings(features) {
         edgeEndId = feature.id;
       }
 
+      if(stopSeq === '1'){
+        edgeStartId = feature.id;
+      }
+
 
       item.setAttribute('data-position', stopSeq);
       item.insertAdjacentHTML('beforeend', `<span class="sideList">${stopSeq}</span>`);
@@ -144,14 +150,24 @@ function renderListings(features) {
     sortChildren('#feature-listing',false);
     // Show the filter input
     //filterEl.parentNode.style.display = 'block';
-
-    map.setFeatureState({
-      source: 'stations',
-      sourceLayer: source_layer,
-      id: edgeEndId
-    }, {
-      edge: true
-    });
+    if(edgeEndId){
+      map.setFeatureState({
+        source: 'stations',
+        sourceLayer: source_layer,
+        id: edgeEndId
+      }, {
+        edge: true
+      });
+    }
+    if(edgeStartId){
+      map.setFeatureState({
+        source: 'stations',
+        sourceLayer: source_layer,
+        id: edgeStartId
+      }, {
+        edge: true
+      });
+    }
 
 
   } else if (radios[1].checked) {
@@ -165,6 +181,17 @@ function renderListings(features) {
         edge: false
       });
     }
+    if(edgeStartId){
+      map.setFeatureState({
+        source: 'stations',
+        sourceLayer: source_layer,
+        id: edgeStartId
+      }, {
+        edge: false
+      });
+    }
+    edgeEndId = null;
+    edgeStartId = null;
 
     filteredOnRoutes.forEach(function(feature) {
       let stopSeq = '';
@@ -182,6 +209,9 @@ function renderListings(features) {
       });
       if(stopMax === stopSeq){
         edgeEndId = feature.id;
+      }
+      if(stopSeq === '1'){
+        edgeStartId = feature.id;
       }
 
 
@@ -209,13 +239,24 @@ function renderListings(features) {
     //filterEl.parentNode.style.display = 'block';
 
 
-    map.setFeatureState({
-      source: 'stations',
-      sourceLayer: source_layer,
-      id: edgeEndId
-    }, {
-      edge: true
-    });
+    if(edgeEndId){
+      map.setFeatureState({
+        source: 'stations',
+        sourceLayer: source_layer,
+        id: edgeEndId
+      }, {
+        edge: true
+      });
+    }
+    if(edgeStartId){
+      map.setFeatureState({
+        source: 'stations',
+        sourceLayer: source_layer,
+        id: edgeStartId
+      }, {
+        edge: true
+      });
+    }
 
   } else if (features.length) {
 
@@ -245,6 +286,16 @@ function renderListings(features) {
         edge: false
       });
     }
+    if(edgeStartId){
+      map.setFeatureState({
+        source: 'stations',
+        sourceLayer: source_layer,
+        id: edgeStartId
+      }, {
+        edge: false
+      });
+    }
+
     // Show the filter input
     filterEl.parentNode.style.display = 'block';
   } else {
@@ -715,6 +766,8 @@ map.on('load', function(){
         'case',
         ['boolean', ['feature-state', 'hover'], false],
         8,
+        ['boolean', ['feature-state', 'edge'], false],
+        4,
         ['boolean', ['feature-state', 'select'], false],
         2,
         ['boolean', ['feature-state', 'clickMain'], false],
@@ -727,6 +780,8 @@ map.on('load', function(){
         'case',
         ['boolean', ['feature-state', 'hover'], false],
         'red',
+        ['boolean', ['feature-state', 'edge'], false],
+        'orange',
         ['boolean', ['feature-state', 'select'], false],
         '#fff700',
         ['boolean', ['feature-state', 'clickMain'], false],
@@ -740,6 +795,8 @@ map.on('load', function(){
         'case',
         ['boolean', ['feature-state', 'hover'], false],
         0.9,
+        ['boolean', ['feature-state', 'edge'], false],
+        0.7,
         ['boolean', ['feature-state', 'select'], false],
         0.7,
         ['boolean', ['feature-state', 'clickMain'], false],
@@ -751,6 +808,8 @@ map.on('load', function(){
       'circle-stroke-color':[
         'case',
         ['boolean', ['feature-state', 'hover'], false],
+        'black',
+        ['boolean', ['feature-state', 'edge'], false],
         'black',
         ['boolean', ['feature-state', 'select'], false],
         'black',
@@ -776,9 +835,9 @@ map.on('load', function(){
       'circle-radius': [
         'case',
         ['boolean', ['feature-state', 'hover'], false],
-        8,
+        10,
         ['boolean', ['feature-state', 'edge'], false],
-        6,
+        8,
         ['boolean', ['feature-state', 'select'], false],
         3.5,
         ['boolean', ['feature-state', 'clickMain'], false],
@@ -792,7 +851,7 @@ map.on('load', function(){
         ['boolean', ['feature-state', 'hover'], false],
         'red',
         ['boolean', ['feature-state', 'edge'], false],
-        'red',
+        'orange',
         ['boolean', ['feature-state', 'select'], false],
         '#fff700',
         ['boolean', ['feature-state', 'clickMain'], false],
@@ -819,6 +878,8 @@ map.on('load', function(){
       'circle-stroke-color':[
         'case',
         ['boolean', ['feature-state', 'hover'], false],
+        'black',
+        ['boolean', ['feature-state', 'edge'], false],
         'black',
         ['boolean', ['feature-state', 'select'], false],
         'black',

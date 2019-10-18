@@ -11,6 +11,12 @@ let map = new mapboxgl.Map({
 });
 let nav = new mapboxgl.NavigationControl();
 map.addControl(nav, 'bottom-right');
+map.addControl(new mapboxgl.GeolocateControl({
+positionOptions: {
+enableHighAccuracy: true
+},
+trackUserLocation: true
+}), 'bottom-right');
 //Station layer
 const source_layer = 'stationWithNum3';
 const source_url = "mapbox://" + "shihwenwutw.8kwc8kvh"

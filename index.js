@@ -723,7 +723,7 @@ map.on('load', function(){
         ['boolean', ['feature-state', 'select'], false],
         '#dd3497',
         ['boolean', ['feature-state', 'click'], false],
-        '#feb24c',
+        '#fd8d3c',
         'rgba(0,0,0,0)'
       ]
     }
@@ -783,7 +783,7 @@ map.on('load', function(){
         ['boolean', ['feature-state', 'select'], false],
         0.7,
         ['boolean', ['feature-state', 'clickMain'], false],
-        0.7,
+        1,
         ['boolean', ['feature-state', 'click'], false],
         0.7,
         0.3
@@ -853,7 +853,7 @@ map.on('load', function(){
         ['boolean', ['feature-state', 'select'], false],
         0.7,
         ['boolean', ['feature-state', 'clickMain'], false],
-        0.9,
+        1,
         ['boolean', ['feature-state', 'click'], false],
         0.7,
         0.3

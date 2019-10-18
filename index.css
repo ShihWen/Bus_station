@@ -159,6 +159,14 @@ body {
 
 }
 
+
+p span {
+  float: right;
+  color: #bdbdbd;
+  font-style: italic;
+
+}
+
 .stationInfo {
   position: absolute;
   right: 16px;

@@ -723,7 +723,7 @@ map.on('load', function(){
         ['boolean', ['feature-state', 'select'], false],
         '#dd3497',
         ['boolean', ['feature-state', 'click'], false],
-        '#8856a7',
+        '#fc4e2a',
         'rgba(0,0,0,0)'
       ]
     }

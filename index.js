@@ -305,6 +305,29 @@ function renderListings(features) {
 
     // remove features filter
     map.setFilter('station-access', ['has', 'routes']);
+
+
+    if(edgeEndId){
+      map.setFeatureState({
+        source: 'stations',
+        sourceLayer: source_layer,
+        id: edgeEndId
+      }, {
+        edge: false
+      });
+    }
+    if(edgeStartId){
+      map.setFeatureState({
+        source: 'stations',
+        sourceLayer: source_layer,
+        id: edgeStartId
+      }, {
+        edge: false
+      });
+
+    }
+    edgeEndId = null;
+    edgeStartId = null;
   }
 }
 
@@ -1144,6 +1167,27 @@ map.on('load', function(){
         click: false
       });
     });
+
+    //turn off edge feature in search
+    if(edgeEndId){
+      map.setFeatureState({
+        source: 'stations',
+        sourceLayer: source_layer,
+        id: edgeEndId
+      }, {
+        edge: true
+      });
+    }
+    if(edgeStartId){
+      map.setFeatureState({
+        source: 'stations',
+        sourceLayer: source_layer,
+        id: edgeStartId
+      }, {
+        edge: true
+      });
+    }
+
     //Empty id list before new search based on each keyin
     all_id = [];
     filt_id = [];

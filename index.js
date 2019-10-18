@@ -630,6 +630,7 @@ function directionListGenerator(direction, filtered_input){
         }
       } else {
         filteredOnRoutes.push(feature)
+        filteredOnRoutes = [...new Set(filteredOnRoutes)];
       }
     })
 

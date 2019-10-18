@@ -7,7 +7,7 @@ let map = new mapboxgl.Map({
   center: [121.55244833917465, 25.03793365035355], // starting position [lng, lat]
   zoom: 12,
   minZoom: 11,
-  maxZoom: 17 // starting zoom
+  maxZoom: 16 // starting zoom
 });
 let nav = new mapboxgl.NavigationControl();
 
@@ -279,6 +279,10 @@ function renderListings(features) {
         popup.setLngLat(feature.geometry.coordinates)
         .setText(feature.properties.station + ' (' + feature.properties.routes.replace(/"|\[|\]/g,'').replace(/,/g,', ') + ')')
         .addTo(map);
+      });
+
+      item.addEventListener('mouseleave',function(){
+        popup.remove();
       });
 
 

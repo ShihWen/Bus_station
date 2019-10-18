@@ -723,7 +723,7 @@ map.on('load', function(){
         ['boolean', ['feature-state', 'select'], false],
         '#dd3497',
         ['boolean', ['feature-state', 'click'], false],
-        '#fc4e2a',
+        '#feb24c',
         'rgba(0,0,0,0)'
       ]
     }
@@ -777,9 +777,9 @@ map.on('load', function(){
       'circle-stroke-width': [
         'case',
         ['boolean', ['feature-state', 'hover'], false],
-        0.9,
+        1,
         ['boolean', ['feature-state', 'edge'], false],
-        0.7,
+        1,
         ['boolean', ['feature-state', 'select'], false],
         0.7,
         ['boolean', ['feature-state', 'clickMain'], false],
@@ -847,9 +847,9 @@ map.on('load', function(){
       'circle-stroke-width': [
         'case',
         ['boolean', ['feature-state', 'hover'], false],
-        0.9,
+        1,
         ['boolean', ['feature-state', 'edge'], false],
-        0.7,
+        1,
         ['boolean', ['feature-state', 'select'], false],
         0.7,
         ['boolean', ['feature-state', 'clickMain'], false],

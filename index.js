@@ -12,8 +12,8 @@ let map = new mapboxgl.Map({
 let nav = new mapboxgl.NavigationControl();
 map.addControl(nav, 'bottom-right');
 //Station layer
-const source_layer = 'stationWithNum2';
-const source_url = "mapbox://" + "shihwenwutw.8d2ndcnj"
+const source_layer = 'stationWithNum3';
+const source_url = "mapbox://" + "shihwenwutw.8kwc8kvh"
 //Route layer
 const source_layer_2 = 'bus_route'
 const source_url_2 = "mapbox://" + 'shihwenwutw.6d7z5jz7'
@@ -328,42 +328,6 @@ function renderListings(features) {
     }
     edgeEndId = null;
     edgeStartId = null;
-  }
-}
-
-function renderListingsDirection(){
-  if(radios[0].checked){
-    let itemBag = {};
-    filteredOnRoutes.forEach(function(feature) {
-      let stopSeq = '';
-      let prop = feature.properties;
-      let stopInfo = prop[value].replace(/"|{|}/g,'')
-      let item = document.createElement('p');
-      item.textContent = prop.station;
-
-      if(stopInfo.indexOf('dirA:0') !== -1){
-        stopSeq = parseInt(stopInfo.substring('dirA:0,seqA:'.length, stopInfo.length),10);
-      } else if(stopInfo.indexOf('dirB:0') !== -1){
-        stopSeq = parseInt(stopInfo.substring('dirB:0,seqB:'.length, stopInfo.length),10);
-      }
-      item.insertAdjacentHTML('beforeend', `<span class="sideList">${stopSeq}</span>`);
-      itemBag[stopSeq] = item
-      /*
-      item.addEventListener('mouseover', function() {
-        // Highlight corresponding feature on the map
-        popup.setLngLat(feature.geometry.coordinates)
-        .setText(feature.properties.station + ' (' + feature.properties.routes.replace(/"|\[|\]/g,'').replace(/,/g,', ') + ')')
-        .addTo(map);
-      });
-
-      listingEl.appendChild(item);
-      */
-
-    });
-
-    // Show the filter input
-    filterEl.parentNode.style.display = 'block';
-
   }
 }
 

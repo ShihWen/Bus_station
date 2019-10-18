@@ -333,7 +333,6 @@ function renderListings(features) {
 
 function renderListingsDirection(){
   if(radios[0].checked){
-    //console.log(filteredOnRoutes);
     let itemBag = {};
     filteredOnRoutes.forEach(function(feature) {
       let stopSeq = '';
@@ -343,10 +342,8 @@ function renderListingsDirection(){
       item.textContent = prop.station;
 
       if(stopInfo.indexOf('dirA:0') !== -1){
-        //console.log('A',stopInfo);
         stopSeq = parseInt(stopInfo.substring('dirA:0,seqA:'.length, stopInfo.length),10);
       } else if(stopInfo.indexOf('dirB:0') !== -1){
-        //console.log('B',stopInfo);
         stopSeq = parseInt(stopInfo.substring('dirB:0,seqB:'.length, stopInfo.length),10);
       }
       item.insertAdjacentHTML('beforeend', `<span class="sideList">${stopSeq}</span>`);
@@ -361,7 +358,6 @@ function renderListingsDirection(){
 
       listingEl.appendChild(item);
       */
-    console.log(itemBag);
 
     });
 
@@ -510,7 +506,7 @@ function featureUpdates_click_id(value, filteredInputPoint, filteredInputLine){
 
     return value in feature.properties
   });
-  //console.log(filteredInputPoint);
+
   filteredInputPoint.forEach(function(feature){
     filt_id.push(feature.id);
     renderListing_click.push(feature);
@@ -991,7 +987,7 @@ map.on('load', function(){
   let hoveredStateId = null;
   map.on('mousemove', 'station-access', function(e){
     if (e.features.length > 0) {
-      //console.log(e.features);
+
       map.getCanvas().style.cursor = 'pointer';
       if (hoveredStateId) {
         // set the hover attribute to false with feature state
@@ -1055,8 +1051,7 @@ map.on('load', function(){
 
 
     if (e.features.length > 0) {
-      console.log(e.features);
-      //console.log(e.features);
+
       click = true;
       filterEl.value = '';
       value = '';

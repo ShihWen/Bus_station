@@ -340,7 +340,7 @@ function renderListings(features) {
 }
 
 function normalize(string) {
-  return string.trim().toLowerCase();
+  return string.trim().toUpperCase();
 }
 
 function getUniqueFeatures(array, comparatorProperty) {
@@ -369,8 +369,7 @@ function featureUpdates(value, filtered_input){
       let station = normalize(feature.properties.station);
       if(exactMatch){
         //return value in feature.properties || station.indexOf(value) > -1;
-        //console.log(value, feature.properties);
-        return value in feature.properties || value.toUpperCase() in feature.properties || value === station;
+        return value in feature.properties || value === station;
       } else {
         return routes.indexOf(value) > -1 || station.indexOf(value) > -1;
       }
@@ -1013,7 +1012,6 @@ map.on('load', function(){
 
   let clickId = null;
   map.on("click", "station-access", function(e){
-    console.log(e.features[0]);
     //disabled exactMactch and directions while clicking
     document.getElementsByName('matchAnswer')[0].checked = false;
     document.getElementById("dir2").checked = true;

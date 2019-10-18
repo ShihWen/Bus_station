@@ -12,8 +12,8 @@ let map = new mapboxgl.Map({
 let nav = new mapboxgl.NavigationControl();
 map.addControl(nav, 'bottom-right');
 //Station layer
-const source_layer = 'stationWithNum';
-const source_url = "mapbox://" + "shihwenwutw.an0gsajh"
+const source_layer = 'stationWithNum2';
+const source_url = "mapbox://" + "shihwenwutw.8d2ndcnj"
 //Route layer
 const source_layer_2 = 'bus_route'
 const source_url_2 = "mapbox://" + 'shihwenwutw.6d7z5jz7'
@@ -64,10 +64,161 @@ let direction_button = false;
 let features = [];
 let features_routes = [];
 
+function sortChildren(containerSelector, reverse) {
+  const container = document.querySelector(containerSelector);
+  const order = reverse ? -1 : 1;
+
+  Array.from(container.children)
+    .sort((a, b) => order * parseInt(a.dataset.position, 10) - order * parseInt(b.dataset.position, 10))
+    .forEach(element => container.appendChild(element));
+
+  // Note you could also conditionally use Array.reverse() instead of the order variable.
+}
+let edgeEndId = null;
+let edgeStartId = null;
 function renderListings(features) {
   // Clear any existing listings
   listingEl.innerHTML = '';
-  if (features.length) {
+  if (radios[0].checked){
+
+    if(edgeEndId){
+      map.setFeatureState({
+        source: 'stations',
+        sourceLayer: source_layer,
+        id: edgeEndId
+      }, {
+        edge: false
+      });
+    }
+    if(edgeStartId){
+      map.setFeatureState({
+        source: 'stations',
+        sourceLayer: source_layer,
+        id: edgeEndId
+      }, {
+        edge: false
+      });
+    }
+
+    filteredOnRoutes.forEach(function(feature) {
+      let stopSeq = '';
+      let prop = feature.properties;
+      let stopInfo = prop[value].replace(/"|\[|\]/g,'')
+      let item = document.createElement('p');
+      let stopMax = ''
+
+      item.textContent = prop.station;
+
+
+      stopInfo.split(',').forEach(function(item){
+        if(item[0]==='0'){
+          stopSeq = item.split('-')[1]
+          stopMax = item.split('-')[2]
+
+        }
+      });
+      if(stopMax === stopSeq){
+        edgeEndId = feature.id;
+      }
+
+
+      item.setAttribute('data-position', stopSeq);
+      item.insertAdjacentHTML('beforeend', `<span class="sideList">${stopSeq}</span>`);
+
+      item.addEventListener('mouseover', function() {
+        // Highlight corresponding feature on the map
+        popup.setLngLat(feature.geometry.coordinates)
+        .setText(feature.properties.station + ' (' + feature.properties.routes.replace(/"|\[|\]/g,'').replace(/,/g,', ') + ')')
+        .addTo(map);
+      });
+
+      item.addEventListener('mouseleave',function(){
+        popup.remove();
+      });
+
+      listingEl.appendChild(item);
+
+    });
+
+    //sortfilter
+    sortChildren('#feature-listing',false);
+    // Show the filter input
+    //filterEl.parentNode.style.display = 'block';
+
+    map.setFeatureState({
+      source: 'stations',
+      sourceLayer: source_layer,
+      id: edgeEndId
+    }, {
+      edge: true
+    });
+
+
+  } else if (radios[1].checked) {
+
+    if(edgeEndId){
+      map.setFeatureState({
+        source: 'stations',
+        sourceLayer: source_layer,
+        id: edgeEndId
+      }, {
+        edge: false
+      });
+    }
+
+    filteredOnRoutes.forEach(function(feature) {
+      let stopSeq = '';
+      let prop = feature.properties;
+      let stopInfo = prop[value].replace(/"|\[|\]/g,'')
+      let item = document.createElement('p');
+      item.textContent = prop.station;
+
+
+      stopInfo.split(',').forEach(function(item){
+        if(item[0]==='1'){
+          stopSeq = item.split('-')[1]
+          stopMax = item.split('-')[2]
+        }
+      });
+      if(stopMax === stopSeq){
+        edgeEndId = feature.id;
+      }
+
+
+      item.setAttribute('data-position', stopSeq);
+      item.insertAdjacentHTML('beforeend', `<span class="sideList">${stopSeq}</span>`);
+
+      item.addEventListener('mouseover', function() {
+        // Highlight corresponding feature on the map
+        popup.setLngLat(feature.geometry.coordinates)
+        .setText(feature.properties.station + ' (' + feature.properties.routes.replace(/"|\[|\]/g,'').replace(/,/g,', ') + ')')
+        .addTo(map);
+      });
+
+      item.addEventListener('mouseleave',function(){
+        popup.remove();
+      });
+
+      listingEl.appendChild(item);
+
+    });
+
+    //sortfilter
+    sortChildren('#feature-listing',false);
+    // Show the filter input
+    //filterEl.parentNode.style.display = 'block';
+
+
+    map.setFeatureState({
+      source: 'stations',
+      sourceLayer: source_layer,
+      id: edgeEndId
+    }, {
+      edge: true
+    });
+
+  } else if (features.length) {
+
     features.forEach(function(feature) {
       let prop = feature.properties;
       let item = document.createElement('p');
@@ -80,13 +231,20 @@ function renderListings(features) {
         .setText(feature.properties.station + ' (' + feature.properties.routes.replace(/"|\[|\]/g,'').replace(/,/g,', ') + ')')
         .addTo(map);
       });
-      listingEl.appendChild(item);
 
-      item.addEventListener('mouseleave',function(){
-        popup.remove();
-      });
+
+      listingEl.appendChild(item);
     });
 
+    if(edgeEndId){
+      map.setFeatureState({
+        source: 'stations',
+        sourceLayer: source_layer,
+        id: edgeEndId
+      }, {
+        edge: false
+      });
+    }
     // Show the filter input
     filterEl.parentNode.style.display = 'block';
   } else {
@@ -422,10 +580,17 @@ function directionListGenerator(direction, filtered_input){
   filt_id_dir = [];
   //Get station with direction value as 0
   filtered_input.forEach(function(feature){
-    let routeDir_text = feature.properties[value].replace(/{|}|\"/g,'');
-    if(routeDir_text.includes(`dirA:${direction}`)||routeDir_text.includes(`dirB:${direction}`)){
-      filteredOnRoutes.push(feature)
-    }
+    let routeDir_text = feature.properties[value].replace(/\[|\]|\"/g,'').split(',');
+    routeDir_text.forEach(function(info){
+      if(direction !== ''){
+        if(info[0]===direction){
+          filteredOnRoutes.push(feature)
+        }
+      } else {
+        filteredOnRoutes.push(feature)
+      }
+    })
+
   });
   renderListings(filteredOnRoutes);
   filteredOnRoutes.forEach(function(feature){
@@ -612,6 +777,8 @@ map.on('load', function(){
         'case',
         ['boolean', ['feature-state', 'hover'], false],
         8,
+        ['boolean', ['feature-state', 'edge'], false],
+        6,
         ['boolean', ['feature-state', 'select'], false],
         3.5,
         ['boolean', ['feature-state', 'clickMain'], false],
@@ -623,6 +790,8 @@ map.on('load', function(){
       'circle-color': [
         'case',
         ['boolean', ['feature-state', 'hover'], false],
+        'red',
+        ['boolean', ['feature-state', 'edge'], false],
         'red',
         ['boolean', ['feature-state', 'select'], false],
         '#fff700',
@@ -637,6 +806,8 @@ map.on('load', function(){
         'case',
         ['boolean', ['feature-state', 'hover'], false],
         0.9,
+        ['boolean', ['feature-state', 'edge'], false],
+        0.7,
         ['boolean', ['feature-state', 'select'], false],
         0.7,
         ['boolean', ['feature-state', 'clickMain'], false],
@@ -800,6 +971,7 @@ map.on('load', function(){
 
 
     if (e.features.length > 0) {
+      console.log(e.features);
       //console.log(e.features);
       click = true;
       filterEl.value = '';

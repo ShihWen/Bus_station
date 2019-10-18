@@ -64,7 +64,7 @@ body {
 
   .map-overlay .listing {
     overflow: auto;
-    max-height: calc(100% - 75px);
+    max-height: calc(100% - 95px);
 
   }
 

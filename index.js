@@ -367,8 +367,10 @@ function featureUpdates(value, filtered_input){
     filtered_input = stations.filter(function(feature) {
       let routes = normalize(feature.properties.routes);
       let station = normalize(feature.properties.station);
+
       if(exactMatch){
         //return value in feature.properties || station.indexOf(value) > -1;
+        //console.log(value, feature.properties);
         return value in feature.properties || value === station;
       } else {
         return routes.indexOf(value) > -1 || station.indexOf(value) > -1;
@@ -1012,6 +1014,7 @@ map.on('load', function(){
 
   let clickId = null;
   map.on("click", "station-access", function(e){
+    console.log(e.features[0]);
     //disabled exactMactch and directions while clicking
     document.getElementsByName('matchAnswer')[0].checked = false;
     document.getElementById("dir2").checked = true;

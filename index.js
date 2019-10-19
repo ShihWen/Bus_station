@@ -23,8 +23,8 @@ trackUserLocation: true
 const source_layer = 'stationWithNum3';
 const source_url = "mapbox://" + "shihwenwutw.8kwc8kvh"
 //Route layer
-const source_layer_2 = 'bus_route'
-const source_url_2 = "mapbox://" + 'shihwenwutw.6d7z5jz7'
+const source_layer_2 = 'zzz_shapeAll'
+const source_url_2 = "mapbox://" + 'shihwenwutw.9qewrzda'
 
 
 //HOVER related

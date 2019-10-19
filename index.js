@@ -1018,7 +1018,6 @@ map.on('load', function(){
 
   let clickId = null;
   map.on("click", "station-access", function(e){
-    console.log(e.features[0]);
     //disabled exactMactch and directions while clicking
     document.getElementsByName('matchAnswer')[0].checked = false;
     document.getElementById("dir2").checked = true;

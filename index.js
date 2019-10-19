@@ -888,7 +888,7 @@ map.on('load', function(){
       ],
     }
   });
-
+  //Effect Layer
   map.addLayer({
     'id': 'station-access',
     'type': 'circle',
@@ -898,61 +898,10 @@ map.on('load', function(){
     },
     'source-layer': source_layer,
     'paint': {
-      'circle-radius': [
-        'case',
-        ['boolean', ['feature-state', 'hover'], false],
-        10,
-        ['boolean', ['feature-state', 'edge'], false],
-        8,
-        ['boolean', ['feature-state', 'select'], false],
-        3.5,
-        ['boolean', ['feature-state', 'clickMain'], false],
-        6,
-        ['boolean', ['feature-state', 'click'], false],
-        3.5,
-        3
-      ],
-      'circle-color': [
-        'case',
-        ['boolean', ['feature-state', 'hover'], false],
-        'rgba(0,0,0,0)',
-        ['boolean', ['feature-state', 'edge'], false],
-        'rgba(0,0,0,0)',
-        ['boolean', ['feature-state', 'select'], false],
-        'rgba(0,0,0,0)',
-        ['boolean', ['feature-state', 'clickMain'], false],
-        'rgba(0,0,0,0)',
-        ['boolean', ['feature-state', 'click'], false],
-        'rgba(0,0,0,0)',
-        'rgba(0,0,0,0)'
-      ],
-
-      'circle-stroke-width': [
-        'case',
-        ['boolean', ['feature-state', 'hover'], false],
-        1,
-        ['boolean', ['feature-state', 'edge'], false],
-        1,
-        ['boolean', ['feature-state', 'select'], false],
-        0.7,
-        ['boolean', ['feature-state', 'clickMain'], false],
-        1,
-        ['boolean', ['feature-state', 'click'], false],
-        0.7,
-        0.3
-      ],
-      'circle-stroke-color':[
-        'case',
-        ['boolean', ['feature-state', 'hover'], false],
-        'rgba(0,0,0,0)',
-        ['boolean', ['feature-state', 'edge'], false],
-        'rgba(0,0,0,0)',
-        ['boolean', ['feature-state', 'select'], false],
-        'rgba(0,0,0,0)',
-        ['boolean', ['feature-state', 'click'], false],
-        'rgba(0,0,0,0)',
-        'rgba(0,0,0,0)'
-      ],
+      'circle-radius': 8,
+      'circle-color': 'rgba(0,0,0,0)',
+      'circle-stroke-width': 1,
+      'circle-stroke-color':'rgba(0,0,0,0)'
     }
   });
 

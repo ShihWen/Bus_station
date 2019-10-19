@@ -857,7 +857,7 @@ map.on('load', function(){
         'red',
         ['boolean', ['feature-state', 'click'], false],
         '#f7fcb9',
-        'white'
+        'rgba(0,0,0,0)'
       ],
 
       'circle-stroke-width': [

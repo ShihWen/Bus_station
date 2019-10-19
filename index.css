@@ -147,7 +147,7 @@ body {
   }
 
   div #direction label{
-    padding-right: 1%;
+    padding-right: 5px;
   }
 
   .map-overlay .listing {

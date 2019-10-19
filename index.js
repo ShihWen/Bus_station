@@ -312,7 +312,7 @@ function renderListings(features) {
     filterEl.parentNode.style.display = 'block';
   } else {
     let empty = document.createElement('p');
-    empty.textContent = 'No results, drag or change words to populate';
+    empty.textContent = 'No results, drag or change words to populate. Station layer will close while zoom level is less 12.';
     listingEl.appendChild(empty);
 
     // remove features filter
@@ -714,7 +714,7 @@ function OnChangeRadioBox(checkbox) {
 }
 
 
-const zoomThreshold = 11.75;
+const zoomThreshold = 12.75;
 
 
 map.on('load', function(){
@@ -759,6 +759,7 @@ map.on('load', function(){
     },
     'source-layer': source_layer,
     'maxzoom': zoomThreshold,
+    'minzoom': 12,
     'paint': {
       'circle-radius': [
         'case',
@@ -915,7 +916,7 @@ map.on('load', function(){
     //and turn off click event if it's on.
     featureUpdates(value,filtered);
     featureUpdates_r(value,filtered_r);
-    //console.log(map.getZoom());
+    console.log(map.getZoom());
 
     all_id_r.forEach(function(id){
       map.setFeatureState({

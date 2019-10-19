@@ -7,7 +7,8 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
+      gtag('set', {'user_id': 'USER_ID'}); // 使用已登入的 user_id 設定 User ID。
+      //ga('set', 'userId', 'USER_ID'); // 使用已登入的 user_id 設定 User ID。
       gtag('config', 'UA-150351954-1');
     </script>
     <meta charset='utf-8' />

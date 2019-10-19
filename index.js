@@ -6,7 +6,7 @@ let map = new mapboxgl.Map({
   style: 'mapbox://styles/shihwenwutw/ck1myebc70e851co3unmss075', // stylesheet location
   center: [121.55244833917465, 25.03793365035355], // starting position [lng, lat]
   zoom: 12,
-  minZoom: 11,
+  minZoom: 10.75,
   maxZoom: 16 // starting zoom
 });
 let nav = new mapboxgl.NavigationControl();
@@ -312,7 +312,7 @@ function renderListings(features) {
     filterEl.parentNode.style.display = 'block';
   } else {
     let empty = document.createElement('p');
-    empty.textContent = 'No results, drag or change words to populate. Station layer will close while zoom level is less 12.';
+    empty.textContent = 'No results, drag or change words to populate.';
     listingEl.appendChild(empty);
 
     // remove features filter
@@ -759,7 +759,7 @@ map.on('load', function(){
     },
     'source-layer': source_layer,
     'maxzoom': zoomThreshold,
-    'minzoom': 12,
+    //'minzoom': 12,
     'paint': {
       'circle-radius': [
         'case',
@@ -822,7 +822,7 @@ map.on('load', function(){
   });
   //Station Layer in larger zoom
   map.addLayer({
-    'id': 'station-access',
+    'id': 'station-origin-LargeZoom',
     'type': 'circle',
     'source': 'stations',
     'layout':{
@@ -885,6 +885,73 @@ map.on('load', function(){
         ['boolean', ['feature-state', 'click'], false],
         'black',
         'rgba(0,0,0,0.25)'
+      ],
+    }
+  });
+
+  map.addLayer({
+    'id': 'station-access',
+    'type': 'circle',
+    'source': 'stations',
+    'layout':{
+      'visibility': 'visible'
+    },
+    'source-layer': source_layer,
+    'paint': {
+      'circle-radius': [
+        'case',
+        ['boolean', ['feature-state', 'hover'], false],
+        10,
+        ['boolean', ['feature-state', 'edge'], false],
+        8,
+        ['boolean', ['feature-state', 'select'], false],
+        3.5,
+        ['boolean', ['feature-state', 'clickMain'], false],
+        6,
+        ['boolean', ['feature-state', 'click'], false],
+        3.5,
+        3
+      ],
+      'circle-color': [
+        'case',
+        ['boolean', ['feature-state', 'hover'], false],
+        'rgba(0,0,0,0)',
+        ['boolean', ['feature-state', 'edge'], false],
+        'rgba(0,0,0,0)',
+        ['boolean', ['feature-state', 'select'], false],
+        'rgba(0,0,0,0)',
+        ['boolean', ['feature-state', 'clickMain'], false],
+        'rgba(0,0,0,0)',
+        ['boolean', ['feature-state', 'click'], false],
+        'rgba(0,0,0,0)',
+        'rgba(0,0,0,0)'
+      ],
+
+      'circle-stroke-width': [
+        'case',
+        ['boolean', ['feature-state', 'hover'], false],
+        1,
+        ['boolean', ['feature-state', 'edge'], false],
+        1,
+        ['boolean', ['feature-state', 'select'], false],
+        0.7,
+        ['boolean', ['feature-state', 'clickMain'], false],
+        1,
+        ['boolean', ['feature-state', 'click'], false],
+        0.7,
+        0.3
+      ],
+      'circle-stroke-color':[
+        'case',
+        ['boolean', ['feature-state', 'hover'], false],
+        'rgba(0,0,0,0)',
+        ['boolean', ['feature-state', 'edge'], false],
+        'rgba(0,0,0,0)',
+        ['boolean', ['feature-state', 'select'], false],
+        'rgba(0,0,0,0)',
+        ['boolean', ['feature-state', 'click'], false],
+        'rgba(0,0,0,0)',
+        'rgba(0,0,0,0)'
       ],
     }
   });

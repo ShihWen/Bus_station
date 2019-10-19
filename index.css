@@ -123,14 +123,20 @@ body {
     width: 30%;
   }
 
-  div #matchBox input {
-    margin: 5px 5px 0 5px;
-  }
-
   div #matchBox {
     width: 35%;
     padding-top: 5px;
     margin: 0 auto;
+  }
+
+  div #matchBox input {
+    margin: 5px 5px 0 5px;
+  }
+
+  div #matchBox label {
+    position: relative;
+    top: 3px;
+    font-size: 14px;
   }
 
   div #direction{

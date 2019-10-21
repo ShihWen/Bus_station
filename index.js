@@ -85,7 +85,7 @@ let edgeEndId = null;
 let edgeStartId = null;
 function renderListings(features) {
   // Clear any existing listings
-  console.log('!!');
+  //console.log('!!');
   listingEl.innerHTML = '';
   if (radios[0].checked){
     if(edgeEndId){
@@ -972,7 +972,7 @@ map.on('load', function(){
       featureUpdates_r(value,filtered_r);
     }
 
-    console.log(map.getZoom());
+    //console.log(map.getZoom());
 
     //Update click result only if there is no value in search box
     if(!value && click === true){
@@ -1068,7 +1068,7 @@ map.on('load', function(){
 
 
     if (e.features.length > 0) {
-
+      console.log(e.features[0].properties.stationID)
       click = true;
       filterEl.value = '';
       value = '';

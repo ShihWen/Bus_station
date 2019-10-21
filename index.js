@@ -913,7 +913,7 @@ map.on('load', function(){
     features = map.queryRenderedFeatures({layers: ['station-access']});
     features_routes = map.queryRenderedFeatures({layers: ['station-route']});
 
-
+    //Keep all feature ids in a list
     stations = features;
     routes = features_routes;
     //Get all feature id after moveend
@@ -923,11 +923,12 @@ map.on('load', function(){
     routes.forEach(function(feature){
       all_id_r.push(feature.id);
     });
-    //call rednerListing if the radios and map clicking function isn't active
-    //
+    //call rednerListing and clean map if the radios, map clicking function
+    //and search value isn't active
     if (features && (!radios[0].checked && !radios[1].checked && !click && !value)) {
       // Populate features for the listing overlay.
       renderListings(features);
+      //Clean map
       all_id_r.forEach(function(id){
         map.setFeatureState({
           source: 'routes',
@@ -968,12 +969,12 @@ map.on('load', function(){
       //featureUpdates(value,filtered);
       //featureUpdates_r(value,filtered_r);
     } else if (!radios[0].checked && !radios[1].checked && !click && value) {
+      //Update map according to search value while moving map
       featureUpdates(value,filtered);
       featureUpdates_r(value,filtered_r);
     }
 
-    //Update map according to search value while moving map
-    //and turn off click event if it's on.
+
 
     console.log(map.getZoom());
     /*
@@ -1063,6 +1064,7 @@ map.on('load', function(){
   let clickId = null;
   map.on("click", "station-access", function(e){
     //disabled exactMactch and directions while clicking
+    direction_button = false;
     document.getElementsByName('matchAnswer')[0].checked = false;
     document.getElementById("dir2").checked = true;
     for(var i=0; i<radios.length; i++) {

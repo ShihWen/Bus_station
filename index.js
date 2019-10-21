@@ -1112,7 +1112,32 @@ map.on('load', function(){
       }, {
         clickMain: true
       });
-      //Get all features on the map with selected attribu
+
+      //Diable previous clicks' feature
+      if(filt_id){
+        filt_id.forEach(function(id){
+          map.setFeatureState({
+            source: 'stations',
+            sourceLayer: source_layer,
+            id: id
+          }, {
+            click: false
+          });
+        });
+      }
+
+      if(filt_id_r){
+        filt_id_r.forEach(function(id){
+          map.setFeatureState({
+            source: 'routes',
+            sourceLayer: source_layer_2,
+            id: id
+          }, {
+            click: false
+          });
+        });
+      }
+
       access = [];
       all_id = [];
       filt_id = [];

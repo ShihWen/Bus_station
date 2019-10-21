@@ -26,7 +26,6 @@ const source_url = "mapbox://" + "shihwenwutw.4az2wtk9"
 const source_layer_2 = 'zzz_shapeAll'
 const source_url_2 = "mapbox://" + 'shihwenwutw.9qewrzda'
 
-
 //HOVER related
 // Target the relevant span tags in the station info div
 let stationDisplay = document.getElementById('station');
@@ -905,7 +904,6 @@ map.on('load', function(){
     }
   });
 
-
   map.on('moveend', function() {
     //Get features after 'moveend'
     features = [];
@@ -974,12 +972,7 @@ map.on('load', function(){
       featureUpdates_r(value,filtered_r);
     }
 
-
-
     console.log(map.getZoom());
-    /*
-
-    */
 
     //Update click result only if there is no value in search box
     if(!value && click === true){
@@ -1006,7 +999,6 @@ map.on('load', function(){
       OnChangeRadioBox();
     }
   });
-
 
   let hoveredStateId = null;
   map.on('mousemove', 'station-access', function(e){

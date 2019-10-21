@@ -86,9 +86,9 @@ let edgeEndId = null;
 let edgeStartId = null;
 function renderListings(features) {
   // Clear any existing listings
+  console.log('!!');
   listingEl.innerHTML = '';
   if (radios[0].checked){
-
     if(edgeEndId){
       map.setFeatureState({
         source: 'stations',
@@ -142,7 +142,7 @@ function renderListings(features) {
       item.addEventListener('mouseover', function() {
         // Highlight corresponding feature on the map
         popup.setLngLat(feature.geometry.coordinates)
-        .setText(feature.properties.station + ' (' + feature.properties.routes.replace(/"|\[|\]/g,'').replace(/,/g,', ') + ')')
+        .setText(feature.properties.station + ' : ' + feature.properties.routes.replace(/"|\[|\]/g,'').replace(/,/g,', '))
         .addTo(map);
       });
 
@@ -229,7 +229,7 @@ function renderListings(features) {
       item.addEventListener('mouseover', function() {
         // Highlight corresponding feature on the map
         popup.setLngLat(feature.geometry.coordinates)
-        .setText(feature.properties.station + ' (' + feature.properties.routes.replace(/"|\[|\]/g,'').replace(/,/g,', ') + ')')
+        .setText(feature.properties.station + ' : ' + feature.properties.routes.replace(/"|\[|\]/g,'').replace(/,/g,', '))
         .addTo(map);
       });
 
@@ -277,7 +277,7 @@ function renderListings(features) {
       item.addEventListener('mouseover', function() {
         // Highlight corresponding feature on the map
         popup.setLngLat(feature.geometry.coordinates)
-        .setText(feature.properties.station + ' (' + feature.properties.routes.replace(/"|\[|\]/g,'').replace(/,/g,', ') + ')')
+        .setText(feature.properties.station + ' : ' + feature.properties.routes.replace(/"|\[|\]/g,'').replace(/,/g,', '))
         .addTo(map);
       });
 
@@ -913,11 +913,7 @@ map.on('load', function(){
     features = map.queryRenderedFeatures({layers: ['station-access']});
     features_routes = map.queryRenderedFeatures({layers: ['station-route']});
 
-    if (features) {
-      // Populate features for the listing overlay.
-      //renderListings(uniqueFeatures);
-      renderListings(features);
-    }
+
     stations = features;
     routes = features_routes;
     //Get all feature id after moveend
@@ -927,31 +923,62 @@ map.on('load', function(){
     routes.forEach(function(feature){
       all_id_r.push(feature.id);
     });
+    //call rednerListing if the radios and map clicking function isn't active
+    //
+    if (features && (!radios[0].checked && !radios[1].checked && !click && !value)) {
+      // Populate features for the listing overlay.
+      renderListings(features);
+      all_id_r.forEach(function(id){
+        map.setFeatureState({
+          source: 'routes',
+          sourceLayer: source_layer_2,
+          id: id
+        }, {
+          select: false
+        });
+      });
+      all_id.forEach(function(id){
+        map.setFeatureState({
+          source: 'stations',
+          sourceLayer: source_layer,
+          id: id
+        }, {
+          select: false
+        });
+      });
+
+      all_id_r.forEach(function(id){
+        map.setFeatureState({
+          source: 'routes',
+          sourceLayer: source_layer_2,
+          id: id
+        }, {
+          click: false
+        });
+      });
+      all_id.forEach(function(id){
+        map.setFeatureState({
+          source: 'stations',
+          sourceLayer: source_layer,
+          id: id
+        }, {
+          click: false
+        });
+      });
+      //featureUpdates(value,filtered);
+      //featureUpdates_r(value,filtered_r);
+    } else if (!radios[0].checked && !radios[1].checked && !click && value) {
+      featureUpdates(value,filtered);
+      featureUpdates_r(value,filtered_r);
+    }
 
     //Update map according to search value while moving map
     //and turn off click event if it's on.
-    featureUpdates(value,filtered);
-    featureUpdates_r(value,filtered_r);
-    console.log(map.getZoom());
 
-    all_id_r.forEach(function(id){
-      map.setFeatureState({
-        source: 'routes',
-        sourceLayer: source_layer_2,
-        id: id
-      }, {
-        click: false
-      });
-    });
-    all_id.forEach(function(id){
-      map.setFeatureState({
-        source: 'stations',
-        sourceLayer: source_layer,
-        id: id
-      }, {
-        click: false
-      });
-    });
+    console.log(map.getZoom());
+    /*
+
+    */
 
     //Update click result only if there is no value in search box
     if(!value && click === true){

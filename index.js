@@ -887,7 +887,7 @@ map.on('load', function(){
       ],
     }
   });
-  //Effect Layer
+  //Feature Source Layer
   map.addLayer({
     'id': 'station-access',
     'type': 'circle',
@@ -995,7 +995,7 @@ map.on('load', function(){
           select: false
         });
       });
-      
+
       renderListing_click = [];
       access.forEach(function(routeInStation){
         featureUpdates_click_id(routeInStation,filtered,filtered_r);

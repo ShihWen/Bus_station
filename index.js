@@ -976,6 +976,26 @@ map.on('load', function(){
 
     //Update click result only if there is no value in search box
     if(!value && click === true){
+      //Clean map
+      all_id_r.forEach(function(id){
+        map.setFeatureState({
+          source: 'routes',
+          sourceLayer: source_layer_2,
+          id: id
+        }, {
+          select: false
+        });
+      });
+      all_id.forEach(function(id){
+        map.setFeatureState({
+          source: 'stations',
+          sourceLayer: source_layer,
+          id: id
+        }, {
+          select: false
+        });
+      });
+      
       renderListing_click = [];
       access.forEach(function(routeInStation){
         featureUpdates_click_id(routeInStation,filtered,filtered_r);

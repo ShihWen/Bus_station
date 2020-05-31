@@ -12,7 +12,7 @@ A quick reference to check bus route and station.
 "exact match", you can select direction type and check the stop sequence.
 * Orange Area: Listing all station in the map area (purple atea) by default, or by search result or click result.
 * Purple Area: Map area, the stops can be clicked and will show all accessable stations and routes by doing so.
-* Grean Area: The staion name and routes for station under your mouse.
+* Grean Area: The station name and routes for station under your mouse.
 
 ![](https://github.com/ShihWen/Bus_station/blob/master/image/view_layout.png)
 Layout
